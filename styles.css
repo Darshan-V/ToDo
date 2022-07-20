@@ -4,17 +4,6 @@ html {
 }
 
 body {
-<<<<<<< HEAD
-    margin: 50px;
-    padding: 50px;
-    display: flex;
-    /* background-color: beige; */
-    justify-content: center;
-}
-
-ul {
-    list-style-type: none;
-=======
 
     display: flex;
     justify-content: center;
@@ -34,28 +23,18 @@ li {
     width: 80%;
     margin-left: 90px;
 
->>>>>>> 3c37e9a (building notes feature)
 }
 
 header {
     width: 100%;
     overflow: auto;
-<<<<<<< HEAD
-    padding-bottom: 50px;
-    padding-top: 10px;
-=======
->>>>>>> 3c37e9a (building notes feature)
 
 }
 
 .container {
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    justify-content: center;
-=======
     justify-content: space-evenly;
->>>>>>> 3c37e9a (building notes feature)
     font-family: sans-serif;
 }
 
@@ -65,37 +44,15 @@ h1 {
 }
 
 .todo-form {
-<<<<<<< HEAD
-    background-color: #fff;
-    padding: 15px;
-    display: flex;
-    border-radius: 5px;
-=======
     padding: 5px 10px;
     background-color: #EEEEEE;
     border: 1px solid #DDDDDD;
     width: 80%;
     margin-left: 90px;
->>>>>>> 3c37e9a (building notes feature)
 }
 
 
 .todo-input {
-<<<<<<< HEAD
-    background-color: #fff;
-    padding: 15px;
-    display: flex;
-    border-radius: 5px;
-}
-
-.add-button {
-    outline: 0;
-    border: none;
-    font-size: 1rem;
-    background-color: transparent;
-    color: #595959;
-}
-=======
     padding: 10px 10px;
     background-color: #EEEEEE;
     border: 1px solid #DDDDDD;
@@ -106,27 +63,11 @@ h1 {
 }
 
 
->>>>>>> 3c37e9a (building notes feature)
 
 .todo-items {
     flex-grow: 1;
 }
 
-<<<<<<< HEAD
-.item {}
-
-
-.checkbox {}
-
-.delete-button {
-    outline: 0;
-    border: none;
-    font-size: 1rem;
-    background-color: transparent;
-    color: #595959;
-}
-
-=======
 /* .item {
     width: 90%;
     margin-right: auto;
@@ -144,7 +85,6 @@ h1 {
 }
 
 
->>>>>>> 3c37e9a (building notes feature)
 button {
     outline: 0;
     border: none;
@@ -153,11 +93,6 @@ button {
     color: #595959;
 }
 
-<<<<<<< HEAD
-button:hover,
-button:focus {
-    color: lightcoral;
-=======
 .delete-button {
     margin: auto;
     font-size: large;
@@ -167,7 +102,6 @@ button:focus {
 button:hover,
 button:focus {
     color: crimson;
->>>>>>> 3c37e9a (building notes feature)
 }
 
 .checked {

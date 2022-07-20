@@ -115,3 +115,7 @@ function addAcc() {
 
 // })
 addAcc()
+
+for (let i = 0; i < todos.length; i++) {
+  todos[i].append(addAcc())
+}
