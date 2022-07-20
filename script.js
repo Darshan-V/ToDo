@@ -1,35 +1,32 @@
-// const { format } = require("path")
-
 const todoForm = document.querySelector('.todo-form')
 const todoInput = document.querySelector('.todo-input')
 const todoItemsList = document.querySelector('.todo-items')
 let todos = []
-let priorities = ['High', 'Medium', 'Low', 'None']
+const priorities = ['High', 'Medium', 'Low', 'None']
 
 todoForm.addEventListener('submit', function (event) {
   event.preventDefault()
   addTodo(todoInput.value)
 })
 
-
 // function to add todo
 function addTodo(item) {
   // if item is not empty
-  if (item !== '') {
-    const todo = {
-      id: Date.now(),
-      name: item,
-      completed: false
-    }
-    // then add it to todos array
-    todos.push(todo)
-    addToLocalStorage(todos)
-    todoInput.value = ''
+  if (item === '') {
+    return
   }
+  const todo = {
+    id: Date.now(),
+    name: item,
+    completed: false
+  }
+  // then add it to todos array
+  todos.push(todo)
+  addToLocalStorage(todos)
+  todoInput.value = ''
 }
 
-
-function renderTodos(todos) {
+function renderTodos(todos, notes) {
   todoItemsList.innerHTML = ''
   todos.forEach(function (item) {
     const checked = item.completed ? 'checked' : null
@@ -44,18 +41,30 @@ function renderTodos(todos) {
       <input type="checkbox" class="checkbox" ${checked}>
       ${item.name}
       <button class="delete-button">X</button>
+
+      <div class="listContainer">
+      <textarea>${notes}</textarea>
+      <select class = 'priorities' name="Priority">
+      <option value="none">None</opiton>
+      <option value="medium">Medium</option>
+      <option value ="high">High</option>
+      </select>
+      <form>
+      <label for="due-date">Duedate:</label>
+      <input type="date" id="Duedate" name="Duedate">
+      <input type="submit">
+      </form>
+    </div>
     `
     todoItemsList.append(li)
   })
 }
-
 
 // function to add todos to local storage
 function addToLocalStorage(todos) {
   localStorage.setItem('todos', JSON.stringify(todos))
   renderTodos(todos)
 }
-
 
 function getFromLocalStorage() {
   const reference = localStorage.getItem('todos')
@@ -65,23 +74,21 @@ function getFromLocalStorage() {
   }
 }
 
-
 function toggle(id) {
   todos.forEach(function (item) {
     if (item.id == id) {
       item.completed = !item.completed
     }
   })
-  addToLocalStorage(todos)
-}
 
+}
 
 function deleteTodo(id) {
   todos = todos.filter(function (item) {
     return item.id != id
   })
   // update the localStorage
-  addToLocalStorage(todos)
+
 }
 
 getFromLocalStorage()
@@ -89,33 +96,38 @@ todoItemsList.addEventListener('click', function (event) {
   // check if the event is on checkbox
   if (event.target.type === 'checkbox') {
     toggle(event.target.parentElement.getAttribute('data-key'))
+    addToLocalStorage(todos)
   }
   if (event.target.classList.contains('delete-button')) {
     deleteTodo(event.target.parentElement.getAttribute('data-key'))
+    addToLocalStorage(todos)
   }
 })
 
+// function addToNote(text) {
 
-function addAcc() {
-  const li = document.querySelector('.item')
+//   const noteBlock = document.createElement('textarea')
+//   noteBlock.setAttribute('class', 'noteBox')
+//   const sContainerBtn = document.createElement('button')
+//   sContainerBtn.setAttribute('class', 'toggle-btn')
+//   sContainerBtn.textContent = '+'
+//   if (text !== '') {
+//     const note = {
+//       note: text
+//     }
+//     todos.push(note)
+//     addToLocalStorage(todos)
+//   }
+// }
 
-  const container = document.createElement('div')
-  container.classList.add('.divContainer')
-  const accBtn = document.createElement('button')
-  accBtn.classList.add('.add-button')
+// const listContainer = document.createElement('div')
+// listContainer.setAttribute('class', 'liContainer')
+// const mainContainer = document.querySelector('.container')
+// listContainer.appendChild(mainContainer)
 
-  const notes = document.createElement('textarea')
-  notes.classList.add('.list-note')
-
-  container.append(notes)
-  li.append(accBtn)
-  li.append(container)
-}
-// li.addEventListener('onclick', () => {
-
+// const listToggle = document.querySelector('li')
+// listToggle.appendChild('sContainerBtn')
+// listToggle.addEventListener('click', () => {
+//   const li = document.querySelector('li')
+//   li.append(listContainer)
 // })
-addAcc()
-
-for (let i = 0; i < todos.length; i++) {
-  todos[i].append(addAcc())
-}
