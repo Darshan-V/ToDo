@@ -40,23 +40,32 @@ function renderTodos(todos, notes) {
     li.innerHTML = `
       <input type="checkbox" class="checkbox" ${checked}>
       ${item.name}
-      <button class="delete-button">X</button>
+      
 
-      <div class="listContainer">
-      <input type='text'${notes}/>
-      <select class = 'priorities' name="Priority">
-      <option value="none">None</opiton>
-      <option value="medium">Medium</option>
-      <option value ="high">High</option>
-      </select>
-      <form>
-      <label for="due-date">Duedate:</label>
-      <input type="date" id="Duedate" name="Duedate"/>
-      <input type="submit"/>
-      </form>
-    </div>
+      
+    <button class="delete-button">X</button>
+
     `
     todoItemsList.append(li)
+
+
+    const listIndex = document.querySelector('li')
+    const listContainer = document.createElement('div')
+    listContainer.setAttribute('class', 'listContainer')
+    listContainer.setAttribute('data-key', item.id)
+
+    listContainer.innerHTML = `<label for="due-date"></label>
+    <input type="date" id="Duedate" name="Duedate"/>
+    
+    <select class = 'priorities' name="Priority">
+    <option value="none">None</opiton>
+    <option value="medium">Medium</option>
+    <option value ="high">High</option>
+    </select>
+    <form>
+    <textarea type='text' class= "note">${notes}</textarea>
+    </form>`
+    li.append(listContainer)
   })
 }
 
@@ -80,15 +89,12 @@ function toggle(id) {
       item.completed = !item.completed
     }
   })
-
 }
 
 function deleteTodo(id) {
   todos = todos.filter(function (item) {
     return item.id != id
   })
-  // update the localStorage
-
 }
 
 getFromLocalStorage()
@@ -104,30 +110,15 @@ todoItemsList.addEventListener('click', function (event) {
   }
 })
 
-// function addToNote(text) {
-
-//   const noteBlock = document.createElement('textarea')
-//   noteBlock.setAttribute('class', 'noteBox')
-//   const sContainerBtn = document.createElement('button')
-//   sContainerBtn.setAttribute('class', 'toggle-btn')
-//   sContainerBtn.textContent = '+'
-//   if (text !== '') {
-//     const note = {
-//       note: text
-//     }
-//     todos.push(note)
-//     addToLocalStorage(todos)
+// function showDiv() {
+//   for (let i = 0; i < todos.length; i++) {
+//     document.querySelectorAll('.listContainer')[i].style.display = 'block'
 //   }
 // }
 
-// const listContainer = document.createElement('div')
-// listContainer.setAttribute('class', 'liContainer')
-// const mainContainer = document.querySelector('.container')
-// listContainer.appendChild(mainContainer)
+// function hideDiv() {
 
-// const listToggle = document.querySelector('li')
-// listToggle.appendChild('sContainerBtn')
-// listToggle.addEventListener('click', () => {
-//   const li = document.querySelector('li')
-//   li.append(listContainer)
-// })
+//   for (let i = 0; i < todos.length; i++) {
+//     document.querySelectorAll('.listContainer')[i].style.display = 'none'
+//   }
+// }

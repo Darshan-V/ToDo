@@ -1,0 +1,28 @@
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="divClass" class="border">
+                    <h1>Div one</h1>
+                </div>
+
+
+                <a href="javascript:;" onclick="hideDiv()">Hide</a>
+
+                <a href="javascript:;" onclick="showDiv()">Show</a>
+
+
+            </div>
+
+        </div>
+    </div>
+    <script>
+        function showDiv() {
+            document.getElementsByClassName('divClass')[0].style.display = "block";
+        }
+
+        function hideDiv() {
+            document.getElementsByClassName('divClass')[0].style.display = "none";
+        }
+    </script>
+</body>

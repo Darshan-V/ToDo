@@ -20,8 +20,8 @@ li {
     padding: 5px 10px;
     background-color: #EEEEEE;
     border: 1px solid #DDDDDD;
-    width: 80%;
-    margin-left: 90px;
+    width: 60%;
+    margin-left: 316px;
 
 }
 
@@ -47,8 +47,8 @@ h1 {
     padding: 5px 10px;
     background-color: #EEEEEE;
     border: 1px solid #DDDDDD;
-    width: 80%;
-    margin-left: 90px;
+    width: 60%;
+    margin-left: 316px;
 }
 
 
@@ -68,16 +68,34 @@ h1 {
     flex-grow: 1;
 }
 
-/* .item {
-    width: 90%;
-    margin-right: auto;
+.note {
+    background-color: #fff;
+    padding: 20px;
+    font-size: 1.1rem;
+    /* margin: auto; */
+}
+
+.listContainer {
+    display: block;
     background-color: #fff;
     padding: 10px;
-    padding-left: 80px;
     font-size: 1.1rem;
-    margin: 10px;
-} */
+}
 
+.priorities {
+    display: flex;
+    margin: auto;
+}
+
+#Duedate {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.target {
+    display: none;
+}
 
 .checkbox {
     margin-right: 10px;
@@ -94,7 +112,8 @@ button {
 }
 
 .delete-button {
-    margin: auto;
+    margin-left: 95%;
+    padding: 5px;
     font-size: large;
 
 }
