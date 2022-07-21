@@ -43,7 +43,7 @@ function renderTodos(todos, notes) {
       <button class="delete-button">X</button>
 
       <div class="listContainer">
-      <textarea>${notes}</textarea>
+      <input type='text'${notes}/>
       <select class = 'priorities' name="Priority">
       <option value="none">None</opiton>
       <option value="medium">Medium</option>
@@ -51,8 +51,8 @@ function renderTodos(todos, notes) {
       </select>
       <form>
       <label for="due-date">Duedate:</label>
-      <input type="date" id="Duedate" name="Duedate">
-      <input type="submit">
+      <input type="date" id="Duedate" name="Duedate"/>
+      <input type="submit"/>
       </form>
     </div>
     `
