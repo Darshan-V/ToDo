@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js"
+    "devStart": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +16,13 @@
     "nodemon": "^2.0.19"
   },
   "keywords": [],
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darshan-V/ToDo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Darshan-V/ToDo/issues"
+  },
+  "homepage": "https://github.com/Darshan-V/ToDo#readme"
 }

@@ -1,8 +1,11 @@
+
 const todoForm = document.querySelector('.todo-form')
 const todoInput = document.querySelector('.todo-input')
 const todoItemsList = document.querySelector('.todo-items')
 let todos = []
-const priorities = ['High', 'Medium', 'Low', 'None']
+let notes = []
+
+// const priorities = ['High', 'Medium', 'Low', 'None']
 
 todoForm.addEventListener('submit', function (event) {
   event.preventDefault()
@@ -16,6 +19,7 @@ function addTodo(item) {
     return
   }
   const todo = {
+    note: "",
     id: Date.now(),
     name: item,
     completed: false
@@ -26,7 +30,8 @@ function addTodo(item) {
   todoInput.value = ''
 }
 
-function renderTodos(todos, notes) {
+function renderTodos(todos) {
+  // console.log(todos)
   todoItemsList.innerHTML = ''
   todos.forEach(function (item) {
     const checked = item.completed ? 'checked' : null
@@ -40,39 +45,41 @@ function renderTodos(todos, notes) {
     li.innerHTML = `
       <input type="checkbox" class="checkbox" ${checked}>
       ${item.name}
-      
-
-      
-    <button class="delete-button">X</button>
+      <button class='show' onclick = 'showDiv()'>▼</button>
 
     `
     todoItemsList.append(li)
 
-
-    const listIndex = document.querySelector('li')
     const listContainer = document.createElement('div')
     listContainer.setAttribute('class', 'listContainer')
     listContainer.setAttribute('data-key', item.id)
 
     listContainer.innerHTML = `<label for="due-date"></label>
     <input type="date" id="Duedate" name="Duedate"/>
-    
+    <form>
+    <textarea type='text' class= "note">${item.note}</textarea>
+    </form>
     <select class = 'priorities' name="Priority">
     <option value="none">None</opiton>
-    <option value="medium">Medium</option>
-    <option value ="high">High</option>
+    <option value="greem">Medium</option>
+    <option value ="red">High</option>
     </select>
-    <form>
-    <textarea type='text' class= "note">${notes}</textarea>
-    </form>`
-    li.append(listContainer)
+    <button class="delete-button">Delete</button>
+    `
+    li.appendChild(listContainer)
+    listContainer.style.display = 'none'
   })
 }
 
+
 // function to add todos to local storage
-function addToLocalStorage(todos) {
+function addToLocalStorage(todos, notes) {
   localStorage.setItem('todos', JSON.stringify(todos))
+  // localStorage.setItem('notes', JSON.stringify(notes))
   renderTodos(todos)
+
+  // localStorage.setItem('notes', JSON.stringify(notes))
+  // renderNotes(notes)
 }
 
 function getFromLocalStorage() {
@@ -81,6 +88,11 @@ function getFromLocalStorage() {
     todos = JSON.parse(reference)
     renderTodos(todos)
   }
+  // const noteReference = localStorage.getItem('notes')
+  // if (noteReference) {
+  // notes = JSON.parse(noteReference)
+  // renderNotes(notes)
+  // }
 }
 
 function toggle(id) {
@@ -110,15 +122,61 @@ todoItemsList.addEventListener('click', function (event) {
   }
 })
 
-// function showDiv() {
-//   for (let i = 0; i < todos.length; i++) {
-//     document.querySelectorAll('.listContainer')[i].style.display = 'block'
+// todoItemsList.addEventListener('change', function (event) {
+//   if (event.target.classList.contains('note')) {
+//     addToLocalStorage(notes)
 //   }
-// }
+// })
 
-// function hideDiv() {
+function showDiv() {
+  const x = document.querySelector('.listContainer')
+  if (x.style.display === 'none') {
+    x.style.display = 'block'
+  } else {
+    x.style.display = 'none'
+  }
+}
 
-//   for (let i = 0; i < todos.length; i++) {
-//     document.querySelectorAll('.listContainer')[i].style.display = 'none'
-//   }
+const noteData = document.querySelector('.note')
+console.log(noteData)
+
+function updateNote(text) {
+  if (text = '') {
+    return
+  }
+  const note = {
+    note: text
+  }
+  notes.push(note)
+  addToLocalStorage(notes)
+  noteData = ''
+}
+
+// noteData.addEventListener('change', function (event) {
+//   updateNote(todoInput.value)
+// })
+
+// function renderNotes(notes) {
+
+//   notes.forEach(function (item) {
+
+
+//     const listContainer = document.createElement('div')
+//     listContainer.setAttribute('class', 'listContainer')
+//     listContainer.setAttribute('data-key', item.id)
+//     listContainer.innerHTML = `<label for="due-date"></label>
+//   <input type="date" id="Duedate" name="Duedate"/>
+//   <form>
+//   <textarea type='text' class= "note">${notes}</textarea>
+//   </form>
+//   <select class = 'priorities' name="Priority">
+//   <option value="none">None</opiton>
+//   <option value="greem">Medium</option>
+//   <option value ="red">High</option>
+//   </select>
+//   <button class="delete-button">Delete</button>
+//   `
+//     li.appendChild(listContainer)
+//     listContainer.style.display = 'none'
+//   })
 // }

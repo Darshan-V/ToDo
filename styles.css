@@ -1,6 +1,6 @@
 html {
     min-height: 100vh;
-    background: lightgray;
+    background: rgb(210, 210, 212);
 }
 
 body {
@@ -17,11 +17,13 @@ ul {
 }
 
 li {
-    padding: 5px 10px;
-    background-color: #EEEEEE;
+    padding: 10px 10px;
+    margin: 4px;
+    background-color: #e2e3e4;
     border: 1px solid #DDDDDD;
-    width: 60%;
+    width: 50%;
     margin-left: 316px;
+    justify-content: center;
 
 }
 
@@ -33,9 +35,11 @@ header {
 
 .container {
     display: flex;
+    /* position: fixed; */
     flex-direction: column;
     justify-content: space-evenly;
-    font-family: sans-serif;
+    font-size: 1.4rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 h1 {
@@ -47,18 +51,17 @@ h1 {
     padding: 5px 10px;
     background-color: #EEEEEE;
     border: 1px solid #DDDDDD;
-    width: 60%;
+    width: 50%;
     margin-left: 316px;
 }
 
 
 .todo-input {
     padding: 10px 10px;
-    background-color: #EEEEEE;
+    background-color: #e8e7ea;
     border: 1px solid #DDDDDD;
-    width: 90%;
-    /* margin-left: 90px; */
-    font-size: large;
+    width: 98%;
+    font-size: 1.5rem;
     font-style: italic;
 }
 
@@ -69,52 +72,76 @@ h1 {
 }
 
 .note {
-    background-color: #fff;
-    padding: 20px;
-    font-size: 1.1rem;
-    /* margin: auto; */
+    position: relative;
+    display: flex;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    width: 50%;
+    height: 200px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    resize: none;
+    font-size: 1.05rem;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 .listContainer {
-    display: block;
-    background-color: #fff;
+    background-color: rgb(251, 252, 252);
     padding: 10px;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    margin: 20px;
 }
 
 .priorities {
-    display: flex;
-    margin: auto;
+
+    width: 120px;
+    height: 30px;
+    border: 1px solid #999;
+    font-size: 18px;
+    color: #486e49;
+    background-color: #eee;
+    border-radius: 5px;
+    box-shadow: 4px 4px #ccc;
 }
 
 #Duedate {
-    display: flex;
-    flex-direction: row;
-    align-items: baseline;
+
+    position: relative;
+    float: right;
+    width: 19%;
+    background: #d7e3e6;
+    margin-left: 2px;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 4px 4px #ccc;
+
 }
 
-.target {
-    display: none;
-}
+
 
 .checkbox {
-    margin-right: 10px;
+    margin-right: 20px;
+    margin-top: 20px;
 
 }
 
 
-button {
-    outline: 0;
-    border: none;
-    font-size: 1rem;
-    background-color: transparent;
-    color: #595959;
-}
+
 
 .delete-button {
-    margin-left: 95%;
+    margin-left: 90%;
     padding: 5px;
-    font-size: large;
+    font-size: larger;
+    outline: #595959;
+    border: #595959;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: #be2323;
+    box-shadow: 4px 4px rgb(231, 105, 105);
+
 
 }
 
@@ -125,5 +152,16 @@ button:focus {
 
 .checked {
     text-decoration: line-through;
+
+}
+
+.show {
+    margin-bottom: 2px;
+    padding: 5px;
+    outline: #595959;
+    border: #595959;
+    font-size: 1.25rem;
+    border-radius: 10px;
+    background-color: transparent;
 
 }
