@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo App</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <title>TODO</title>
   </head>
 
   <body>
     <div class="container">
-      <ul class="list">
-
-      </ul>
-
-      <div class="input-container">
-        <span>+</span>
-        <input type="text" class="input-container__input" placeholder="New task..." />
+      <div class="todoLists"></div>
+      <div class="myTodo">
+        <div class="inputvalue">
+          +
+          <input class="inputVal" id="newtask" type="text" placeholder="New task..." value="" autofocus />
+        </div>
       </div>
     </div>
-
-
-
-    <script src="./script.js"></script>
   </body>
+  <footer class="DoneTasksdiv" id="DoneTasksdiv">
+    <input class="doneTasks" type="button" value="Show Done Tasks" onclick="showHideDoneTasks()" />
+    <button class="clearDoneTasks" onclick="clearDoneTask()">
+      Clear Done Tasks
+    </button>
+  </footer>
+  <button class="clearTasks" onclick="clearTask()">Clear all Tasks</button>
+  <script src="script.js"></script>
 
 </html>
