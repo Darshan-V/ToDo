@@ -41,10 +41,10 @@ const storedItems = JSON.parse(localStorage.getItem('task'))
 if (storedItems === null) taskList = []
 else taskList = storedItems
 
-function showItem(listOfTasks) {
+function showItem(taskList) {
   let html = ''
   const itemShow = document.querySelector('.todoLists')
-  listOfTasks.forEach((data, index) => {
+  taskList.forEach((data, index) => {
     html += `
     <div id = '${data.id}' class='task'>
       ${checkboxHTML(data)}
@@ -109,6 +109,7 @@ function duedateHTML(task) {
 }
 
 function priorityHTML(task) {
+
   return `<select id='priority' class = 'priority' onChange = addPriority(${task.id})>
   <option value=0 ${task.priority === '0' ? 'selected' : ''}>None</option>
   <option value=1 ${task.priority === '1' ? 'selected' : ''}>Low</option>
