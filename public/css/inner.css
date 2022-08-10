@@ -1,0 +1,121 @@
+.task {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 8px;
+    border-radius: 3px;
+    height: fit-content;
+    flex-wrap: wrap;
+    width: inherit;
+    margin-bottom: 0.5rem;
+    border-left: solid rgb(239, 235, 235) 3px;
+    border-color: white;
+    border-bottom-style: groove;
+}
+
+.innerContentContainer {
+    border-top: groove;
+    background-color: white;
+}
+
+
+
+.innerContent {
+    width: 930px;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    background-color: white;
+}
+
+.notesdiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    float: left;
+    width: 60%;
+    padding-top: 5px;
+}
+
+.notes {
+    display: flex;
+    justify-content: flex-start;
+    width: 380px;
+    height: 185px;
+    margin-top: 0.25rem;
+    border: rgb(174, 173, 173) solid 1px;
+    font-size: 1rem;
+    resize: none;
+}
+
+.datepriority {
+    display: flex;
+    width: 40%;
+    height: 215px;
+    padding-top: 5px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.clearTasks {
+    position: fixed;
+    bottom: 10px;
+    right: 5px;
+    background-color: white;
+    border: solid 0.5px rgb(210, 210, 210);
+    border-radius: 3px;
+    width: fit-content;
+    height: fit-content;
+    font-size: 0.9rem;
+    padding: 12px;
+    text-align: start;
+    cursor: pointer;
+}
+
+.clearTasks:hover {
+    background-color: crimson;
+    border-radius: 20px;
+}
+
+.Details {
+    margin-left: 9px;
+    border-radius: 10%;
+    width: 5%;
+    height: 100%;
+    text-align: center;
+    float: right;
+    padding: 6px;
+    border: none;
+    font-size: 30px;
+}
+
+.Details:hover {
+    background-color: rgb(202, 202, 202);
+    transition: 0.7s;
+    cursor: pointer;
+}
+
+.duedate {
+    margin-right: 200px;
+    font-size: larger;
+    background-color: azure;
+}
+
+.priority {
+    margin-right: 200px;
+    font-size: large;
+}
+
+.deleteTask {
+    margin-left: 300px;
+    display: flex;
+    justify-content: flex-end;
+    font-size: large;
+    cursor: pointer;
+}
+
+.deleteTask:hover {
+    background-color: crimson;
+    border-radius: 20px;
+}

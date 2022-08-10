@@ -2,14 +2,13 @@ const inputVal = document.querySelector('.inputVal')
 const donetask = document.querySelector('.doneTasks')
 const doneTasksDiv = document.querySelector('#DoneTasksdiv')
 
-
 inputVal.addEventListener('keyup', (event) => {
   if (event.key === 'Enter') {
     addTodo()
   }
 })
 
-function addTodo(todo) {
+function addTodo() {
   const items = {
     id: '',
     title: '',
@@ -20,15 +19,13 @@ function addTodo(todo) {
     show: false
   }
   if (inputVal.value.trim() != 0) {
-    const localItems = JSON.parse(localStorage.getItem('task'))
+    const storedItems = JSON.parse(localStorage.getItem('task'))
 
-    if (localItems === null) taskList = []
-    else taskList = localItems
+    if (storedItems === null) taskList = []
+    else taskList = storedItems
 
     items.done = false
-    items.id = window.crypto
-      .getRandomValues(new Uint32Array(1))[0]
-      .toString()
+    items.id = Date.now().toString()
     items.title = inputVal.value
     taskList.push(items)
     localStorage.setItem('task', JSON.stringify(taskList))
@@ -49,9 +46,9 @@ function showItem(taskList) {
     <div id = '${data.id}' class='task'>
       ${checkboxHTML(data)}
       ${titleHTML(data)}
-      
+       <span id = 'date' class = 'date'>${data.duedate ? new Date(data.duedate).toLocaleDateString() : ''} </span>
       ${showHideHTML(data)}
-      <div style='display: none' id='innerContent'>
+      <div style='display: none' class='innerContentContainer'>
       <div class = 'innerContent'>
         <div class = 'notesdiv'>
           Notes
@@ -67,8 +64,7 @@ function showItem(taskList) {
           <br />
           ${priorityHTML(data)}
           <br /> <br /> <br />
-          <button class='deleteTask' onClick='deleteItem(${data.id
-      }, ${index})'>Delete</button>
+          <button class='deleteTask' onClick='deleteItem(${data.id}, ${index})'>Delete</button>
         </div>
       </div>
       </div>
@@ -85,13 +81,11 @@ function checkboxHTML(task) {
 }
 
 function titleHTML(task) {
-  return `<input class = 'title' type = 'text' id = 'pText' value = '${task.title
-    }' style = 'text-decoration: ${task.done ? 'line-through' : 'none'
-    }' onChange = updateTitle(${task.id}) />`
+  return `<input class = 'title' type = 'text' id = 'pText' value = '${task.title}' style = 'text-decoration: ${task.done ? 'line-through' : 'none'}' onChange = updateTitle(${task.id}) />`
 }
 
 function showHideHTML(task) {
-  return `<button id='details' class='Details' onClick = showHide(${task.id}) >v</button>`
+  return `<div id='details' class='Details' onClick = showHide(${task.id}) >☶</div>`
 }
 
 function NotesHTML(task) {
@@ -103,9 +97,10 @@ function NotesHTML(task) {
 
 function duedateHTML(task) {
   if (task.duedate) {
-    return `<input type='date' id='duedate' class = 'duedate' onChange = addDate(${task.id}) value = '${task.duedate}'/>`
+    return `<input type='date' id='duedate' class = 'duedate' onChange = addDueDate(${task.id}) value = '${task.duedate}'/>`
   }
-  return `<input type='date' id='duedate' class = 'duedate' onChange = addDate(${task.id}) />`
+  return `<input type='date' id='duedate' class = 'duedate' onChange = addDueDate(${task.id}) />`
+
 }
 
 function priorityHTML(task) {
@@ -136,15 +131,15 @@ function updateTitle(id) {
 function showHide(id) {
   const innerdetails = document
     .getElementById(`${id}`)
-    .querySelector('#innerContent')
-  const details = document.getElementById(`${id}`).querySelector('#details')
+    .querySelector('.innerContentContainer')
+  const details = document.getElementById(`${id}`).querySelector('.Details')
   task = fetchtask(id)
   if (!task.show) {
     innerdetails.style = 'display: inline-block'
-    details.innerText = '^'
+    details.innerText = '☶'
   } else {
     innerdetails.style = 'display: none'
-    details.innerText = 'v'
+    details.innerText = '☶'
   }
   task.show = !task.show
   localStorage.setItem('task', JSON.stringify(taskList))
@@ -215,14 +210,15 @@ function addPriority(id) {
   const taskdiv = document.getElementById(`${task.id}`)
 }
 
-function addDate(id) {
-  const duedate = document.getElementById(`${id}`).querySelector('#duedate')
-  const date = document.getElementById(`${id}`).querySelector('#date')
+function addDueDate(id) {
+  const duedate = document.getElementById(`${id}`).querySelector(`#duedate`)
+  const date = document.getElementById(`${id}`).querySelector(`#date`)
   date.innerText = new Date(duedate.value).toLocaleDateString()
   task = fetchtask(id)
   task.duedate = duedate.value
   localStorage.setItem('task', JSON.stringify(taskList))
 }
+
 
 function addnotes(id) {
   const notes = document.getElementById(`${id}`).querySelector('#notes')
