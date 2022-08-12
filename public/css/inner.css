@@ -1,6 +1,5 @@
 .task {
     display: flex;
-    align-items: center;
     background: white;
     padding: 8px;
     border-radius: 3px;
@@ -21,7 +20,7 @@
 
 
 .innerContent {
-    width: 930px;
+    display: flex;
     margin-top: 0.5rem;
     font-size: 0.9rem;
     background-color: white;
@@ -78,12 +77,42 @@
     border-radius: 20px;
 }
 
+.DoneTasksdiv {
+    position: fixed;
+    bottom: 10px;
+    left: 5px;
+    width: fit-content;
+    height: fit-content;
+    font-size: 0.9rem;
+    padding: 12px;
+    text-align: start;
+    cursor: pointer;
+}
+
+.doneTasks {
+    padding: 10px;
+}
+
+.doneTasks:hover {
+    border-radius: 15px;
+}
+
+.clearDoneTasks {
+    padding: 10px;
+    ;
+}
+
+.clearDoneTasks:hover {
+    border-radius: 15px;
+}
+
 .Details {
-    margin-left: 9px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     border-radius: 10%;
     width: 5%;
     height: 100%;
-    text-align: center;
     float: right;
     padding: 6px;
     border: none;
@@ -108,7 +137,6 @@
 }
 
 .deleteTask {
-    margin-left: 300px;
     display: flex;
     justify-content: flex-end;
     font-size: large;

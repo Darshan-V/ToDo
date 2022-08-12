@@ -1,6 +1,6 @@
 const inputVal = document.querySelector('.inputVal')
 const donetask = document.querySelector('.doneTasks')
-const doneTasksDiv = document.querySelector('#DoneTasksdiv')
+const doneTasksDiv = document.querySelector('.DoneTasksdiv')
 
 inputVal.addEventListener('keyup', (event) => {
   if (event.key === 'Enter') {
@@ -30,7 +30,7 @@ function addTodo() {
     taskList.push(items)
     localStorage.setItem('task', JSON.stringify(taskList))
   }
-  showItem(taskList)
+  renderItems(taskList)
   inputVal.value = ''
 }
 
@@ -38,7 +38,7 @@ const storedItems = JSON.parse(localStorage.getItem('task'))
 if (storedItems === null) taskList = []
 else taskList = storedItems
 
-function showItem(taskList) {
+function renderItems(taskList) {
   let html = ''
   const itemShow = document.querySelector('.todoLists')
   taskList.forEach((data, index) => {
@@ -73,7 +73,7 @@ function showItem(taskList) {
   })
   itemShow.innerHTML = html
 }
-showItem(taskList)
+renderItems(taskList)
 
 function checkboxHTML(task) {
 
@@ -90,9 +90,9 @@ function showHideHTML(task) {
 
 function NotesHTML(task) {
   if (task.notes) {
-    return `<textarea type='text' id='notes' class = 'notes' onblur = addnotes(${task.id}) > ${task.notes} </textarea>`
+    return `<textarea type='text' id='notes' class = 'notes' onChange = addnotes(${task.id}) > ${task.notes} </textarea>`
   }
-  return `<textarea type='text' id='notes' class = 'notes' onblur = addnotes(${task.id}) > </textarea>`
+  return `<textarea type='text' id='notes' class = 'notes' onChange = addnotes(${task.id}) > </textarea>`
 }
 
 function duedateHTML(task) {
@@ -160,43 +160,43 @@ function checkbox(id) {
     completedTasksList.push(task)
     taskList = taskList.filter(t => t.id !== id.toString())
 
-    if (donetask.value === 'Show Done Tasks') showItem(taskList)
-    else showItem(taskList.concat(completedTasksList))
+    if (donetask.value === 'Show Done Tasks') renderItems(taskList)
+    else renderItems(taskList.concat(completedTasksList))
 
-    doneTasksDiv.style.display = 'inline-block'
+    doneTasksDiv.style.display = 'flex'
   } else {
     title.style = 'text-decoration: none'
     task.done = false
     taskList.push(completedTasksList.filter(t => t.id === id.toString())[0])
     completedTasksList = completedTasksList.filter(t => t.id !== id.toString())
-    showItem(taskList.concat(completedTasksList))
+    renderItems(taskList.concat(completedTasksList))
 
     if (completedTasksList.length === 0) {
       doneTasksDiv.style.display = 'none'
       showHideDoneTasks()
       doneTasksClick = !doneTasksClick
-    } else doneTasksDiv.style.display = 'inline-block'
+    } else doneTasksDiv.style.display = 'flex'
   }
   localStorage.setItem('task', JSON.stringify(taskList))
   localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
 }
 
 if (completedTasksList.length === 0) doneTasksDiv.style.display = 'none'
-else doneTasksDiv.style.display = 'inline-block'
+else doneTasksDiv.style.display = 'flex'
 
 let doneTasksClick = true
 
 function showHideDoneTasks() {
   if (completedTasksList.length === 0) {
-    donetask.value = ' Show Done Tasks'
+    donetask.value = '🙉 Show Done Tasks'
     return
   }
   if (doneTasksClick) {
-    showItem(taskList.concat(completedTasksList))
-    donetask.value = ' Hide Done Tasks'
+    renderItems(completedTasksList)
+    donetask.value = '🙈 Hide Done Tasks'
   } else {
-    showItem(taskList)
-    donetask.value = 'Show Done Tasks'
+    renderItems(taskList)
+    donetask.value = '🙉 Show Done Tasks'
   }
   doneTasksClick = !doneTasksClick
 }
@@ -232,31 +232,26 @@ function deleteItem(id, index) {
   if (task.done) {
     completedTasksList.splice(index - taskList.length, 1)
     localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
-    showItem(taskList.concat(completedTasksList))
+    renderItems(taskList.concat(completedTasksList))
   } else {
     taskList.splice(index, 1)
     localStorage.setItem('task', JSON.stringify(taskList))
-    showItem(taskList)
-  }
-  if (completedTasksList.length === 0) {
-    doneTasksDiv.style.display = 'none'
-    doneTasksClick = !doneTasksClick
+    renderItems(taskList)
   }
 }
 
-function clearTask() {
+function clearAll() {
   localStorage.clear()
   inputVal.value = ''
   taskList = []
   completedTasksList = []
-  showItem(taskList)
+  renderItems(taskList)
   doneTasksDiv.style.display = 'none'
 }
 
 function clearDoneTask() {
   completedTasksList = []
   localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
-  showItem(taskList)
+  renderItems(taskList)
   if (!doneTasksClick) showHideDoneTasks()
-  doneTasksDiv.style.display = 'none'
 }
