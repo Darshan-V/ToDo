@@ -38,15 +38,17 @@ const storedItems = JSON.parse(localStorage.getItem('task'))
 if (storedItems === null) taskList = []
 else taskList = storedItems
 
-function componentsToRender() {
+
+function renderItems(taskList) {
     let html = ''
-    taskList.map((data, index) => {
+    const itemShow = document.querySelector('.todoLists')
+    taskList.forEach((data, index) => {
         html += `
-    <div id = '${data.id}' class='task' >
+    <div id = '${data.id}' class='task'>
       ${checkboxHTML(data)}
       ${titleHTML(data)}
        <span id = 'date' class = 'date'>${data.duedate ? new Date(data.duedate).toLocaleDateString() : ''} </span>
-      ${taskContent(data)}
+      ${taskComponents(data)}
       <div style='display: none' class='innerContentContainer'>
       <div class = 'innerContent'>
         <div class = 'notesdiv'>
@@ -70,14 +72,9 @@ function componentsToRender() {
     </div>
     `
     })
-    return html
+    itemShow.innerHTML = html
 }
-
-function renderItems() {
-    const itemShow = document.querySelector('.todoLists')
-    itemShow.innerHTML = componentsToRender()
-}
-renderItems()
+renderItems(taskList)
 
 function checkboxHTML(task) {
     return `<input type='checkbox' id = 'checkbox' onChange = checkbox(${task.id}) ${task.done ? 'checked' : ''}/>`
@@ -87,8 +84,8 @@ function titleHTML(task) {
     return `<input class = 'title' type = 'text' id = 'pText' value = '${task.title}' style = 'text-decoration: ${task.done ? 'line-through' : 'none'}' onChange = updateTitle(${task.id}) />`
 }
 
-function taskContent(task) {
-    return `<div id='details' class='Details' onClick = dropDown(${task.id}) >☶</div>`
+function taskComponents(task) {
+    return `<div id='details' class='Details' onClick = showExtra(${task.id}) >☶</div>`
 }
 
 function NotesHTML(task) {
@@ -116,15 +113,6 @@ function priorityHTML(task) {
   </select>`
 }
 
-function setPriorityColor(priority) {
-    return {
-        '0': 'white 2px',
-        '1': 'blue 2px',
-        '2': 'green 2px',
-        '3': 'red 2px'
-    }[priority]
-}
-
 function fetchtask(id) {
     return (
         taskList.filter(t => t.id === id.toString())[0] ||
@@ -139,7 +127,7 @@ function updateTitle(id) {
     localStorage.setItem('task', JSON.stringify(taskList))
 }
 
-function dropDown(id) {
+function showExtra(id) {
     const innerdetails = document
         .getElementById(`${id}`)
         .querySelector('.innerContentContainer')
@@ -156,9 +144,6 @@ function dropDown(id) {
     localStorage.setItem('task', JSON.stringify(taskList))
 }
 
-const completedItems = JSON.parse(localStorage.getItem('completedtasks'))
-if (completedItems === null) completedTasksList = []
-else completedTasksList = completedItems
 
 function checkbox(id) {
     const check = document.getElementById(`${id}`).querySelector('#checkbox')
@@ -168,42 +153,41 @@ function checkbox(id) {
         title.style = 'text-decoration: line-through'
         task.done = true
 
-        completedTasksList.push(task)
-        taskList = taskList.filter(t => t.id !== id.toString())
+        taskList.filter(t => t.done === true)
+        console.log(taskList)
 
-        if (donetask.value === 'Show Done Tasks') renderItems(taskList)
+        if (donetask.value === 'Show Done Tasks') renderItems(taskList.filter(t => t.done === fasle))
+        else renderItems(taskList.concat(t => t.done === true))
 
         doneTasksDiv.style.display = 'flex'
     } else {
         title.style = 'text-decoration: none'
         task.done = false
-        taskList.push(completedTasksList.filter(t => t.id === id.toString())[0])
-        completedTasksList = completedTasksList.filter(t => t.id !== id.toString())
-        renderItems(taskList.concat(completedTasksList))
+        taskList.filter(t => t.done === false)
+        renderItems(taskList.concat(t => t.done === false))
 
-        if (completedTasksList.length === 0) {
+        if (taskList.map(t => t.done) === true) {
             doneTasksDiv.style.display = 'none'
-            showHideDoneTasks()
+            filterTasks()
             ifDone = !ifDone
         } else doneTasksDiv.style.display = 'flex'
     }
     localStorage.setItem('task', JSON.stringify(taskList))
-    localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
 }
 
-if (completedTasksList.length === 0) doneTasksDiv.style.display = 'none'
+if (taskList.filter(t => t.done === true) === 0) doneTasksDiv.style.display = 'none'
 else doneTasksDiv.style.display = 'flex'
 
 let ifDone = true
 
 function filterTasks() {
-    if (completedTasksList.length === 0) {
+    if (taskList.filter(t => t.done) === false) {
         donetask.value = '🙉 Show Done Tasks'
         return
     }
     if (ifDone) {
-        renderItems(completedTasksList)
-        donetask.value = '🙈 Hide Done Tasks'
+        renderItems(taskList.filter(t => t.done === true))
+        donetask.value = '🙈 Show All Tasks'
     } else {
         renderItems(taskList)
         donetask.value = '🙉 Show Done Tasks'
@@ -217,8 +201,6 @@ function addPriority(id) {
     task.priority = priority.value
     priority.children[priority.value].selected = true
     localStorage.setItem('task', JSON.stringify(taskList))
-    const taskdiv = document.getElementById(`${task.id}`)
-    taskdiv.style = `border-left: ${setPriorityColor(task.priority)}`
 }
 
 function addDueDate(id) {
@@ -240,29 +222,22 @@ function addnotes(id) {
 
 function deleteItem(id, index) {
     task = fetchtask(id)
-    if (task.done) {
-        completedTasksList.splice(index - taskList.length, 1)
-        localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
-        renderItems(taskList.concat(completedTasksList))
-    } else {
-        taskList.splice(index, 1)
-        localStorage.setItem('task', JSON.stringify(taskList))
-        renderItems(taskList)
-    }
+    taskList.splice(index, 1)
+    localStorage.setItem('task', JSON.stringify(taskList))
+    renderItems(taskList)
 }
 
 function clearAll() {
     localStorage.clear()
     inputVal.value = ''
     taskList = []
-    completedTasksList = []
     renderItems(taskList)
     doneTasksDiv.style.display = 'none'
 }
 
 function clearDoneTask() {
-    completedTasksList = []
-    localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
+
+    localStorage.setItem('task', JSON.stringify(taskList))
     renderItems(taskList)
     if (!ifDone) filterTasks()
 }
