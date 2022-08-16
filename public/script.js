@@ -9,7 +9,7 @@ inputVal.addEventListener('keyup', (event) => {
 })
 
 function addTodo() {
-  const items = {
+  const item = {
     id: '',
     title: '',
     notes: '',
@@ -18,16 +18,16 @@ function addTodo() {
     done: false,
     show: false
   }
-  if (inputVal.value.trim() != 0) {
+  if (inputVal.value.trim() !== '') {
     const storedItems = JSON.parse(localStorage.getItem('task'))
 
     if (storedItems === null) taskList = []
     else taskList = storedItems
 
-    items.done = false
-    items.id = Date.now().toString()
-    items.title = inputVal.value
-    taskList.push(items)
+    item.done = false
+    item.id = Date.now().toString()
+    item.title = inputVal.value
+    taskList.push(item)
     localStorage.setItem('task', JSON.stringify(taskList))
   }
   renderItems(taskList)
@@ -37,6 +37,7 @@ function addTodo() {
 const storedItems = JSON.parse(localStorage.getItem('task'))
 if (storedItems === null) taskList = []
 else taskList = storedItems
+
 
 function renderItems(taskList) {
   let html = ''
@@ -76,7 +77,6 @@ function renderItems(taskList) {
 renderItems(taskList)
 
 function checkboxHTML(task) {
-
   return `<input type='checkbox' id = 'checkbox' onChange = checkbox(${task.id}) ${task.done ? 'checked' : ''}/>`
 }
 
@@ -174,7 +174,7 @@ function checkbox(id) {
     if (completedTasksList.length === 0) {
       doneTasksDiv.style.display = 'none'
       showHideDoneTasks()
-      doneTasksClick = !doneTasksClick
+      ifDone = !ifDone
     } else doneTasksDiv.style.display = 'flex'
   }
   localStorage.setItem('task', JSON.stringify(taskList))
@@ -184,21 +184,21 @@ function checkbox(id) {
 if (completedTasksList.length === 0) doneTasksDiv.style.display = 'none'
 else doneTasksDiv.style.display = 'flex'
 
-let doneTasksClick = true
+let ifDone = true
 
 function showHideDoneTasks() {
   if (completedTasksList.length === 0) {
     donetask.value = '🙉 Show Done Tasks'
     return
   }
-  if (doneTasksClick) {
+  if (ifDone) {
     renderItems(completedTasksList)
     donetask.value = '🙈 Hide Done Tasks'
   } else {
     renderItems(taskList)
     donetask.value = '🙉 Show Done Tasks'
   }
-  doneTasksClick = !doneTasksClick
+  ifDone = !ifDone
 }
 
 function addPriority(id) {
@@ -253,5 +253,5 @@ function clearDoneTask() {
   completedTasksList = []
   localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
   renderItems(taskList)
-  if (!doneTasksClick) showHideDoneTasks()
+  if (!ifDone) showHideDoneTasks()
 }
