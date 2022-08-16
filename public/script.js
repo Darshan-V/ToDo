@@ -173,7 +173,7 @@ function checkbox(id) {
 
     if (completedTasksList.length === 0) {
       doneTasksDiv.style.display = 'none'
-      showHideDoneTasks()
+      filterTasks()
       ifDone = !ifDone
     } else doneTasksDiv.style.display = 'flex'
   }
@@ -186,7 +186,7 @@ else doneTasksDiv.style.display = 'flex'
 
 let ifDone = true
 
-function showHideDoneTasks() {
+function filterTasks() {
   if (completedTasksList.length === 0) {
     donetask.value = '🙉 Show Done Tasks'
     return
@@ -253,5 +253,5 @@ function clearDoneTask() {
   completedTasksList = []
   localStorage.setItem('completedtasks', JSON.stringify(completedTasksList))
   renderItems(taskList)
-  if (!ifDone) showHideDoneTasks()
+  if (!ifDone) filterTasks()
 }
