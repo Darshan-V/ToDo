@@ -3,20 +3,25 @@ let DB = JSON.parse(localStorage.getItem('task'))
 export default { DB }
 
 
-
+//get tasks from localstorage
 export function getTasks() {
     return JSON.parse(localStorage.getItem('task')) || []
 }
 
-
+//savetasks to localstorage
 export function saveTasks() {
     localStorage.setItem('task', JSON.stringify(taskList))
 }
 
 let taskList = getTasks()
+export function* listGenerator() {
+    for (let i = 0; i < taskList.length; i++) {
+        yield taskList[i]
+    }
+}
 console.log(taskList)
 
-const inputVal = document.querySelector('.inputVal')
+const inputVal = document.querySelector('.inputVal')//move to edit.js
 
 export function addTodo() {
     const item = {
@@ -39,6 +44,7 @@ export function addTodo() {
 
 
 }
+
 export function fetchtask(id) {
     return (
         taskList.find(t => t.id === id.toString())[0]//use find
