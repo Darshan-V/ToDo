@@ -1,15 +1,23 @@
 console.log('hello')
-export let taskList = []
-localStorage.setItem('task', JSON.stringify(taskList))
 let DB = JSON.parse(localStorage.getItem('task'))
 export default { DB }
+
 
 
 export function getTasks() {
     return JSON.parse(localStorage.getItem('task')) || []
 }
 
+
+export function saveTasks() {
+    localStorage.setItem('task', JSON.stringify(taskList))
+}
+
+let taskList = getTasks()
+console.log(taskList)
+
 const inputVal = document.querySelector('.inputVal')
+
 export function addTodo() {
     const item = {
         id: '',
@@ -25,13 +33,15 @@ export function addTodo() {
         item.id = Date.now().toString()
         item.title = inputVal.value
         taskList.push(item)
-        localStorage.setItem('task', JSON.stringify(taskList))
+        saveTasks()
+
     }
+
 
 }
 export function fetchtask(id) {
     return (
-        taskList.filter(t => t.id === id.toString())[0]
+        taskList.find(t => t.id === id.toString())[0]//use find
     )
 }
 
@@ -39,29 +49,17 @@ export function updateTitle(id) {
     const title = document.getElementById(`${id}`).querySelector('#pText')
     task = fetchtask(id)
     task.title = title.value
-    localStorage.setItem('task', JSON.stringify(taskList))
+    saveTasks()
+
 }
 
 
 export function deleteItem(id, index) {
     task = fetchtask(id)
     taskList.splice(index, 1)
-    localStorage.setItem('task', JSON.stringify(taskList))
-    renderItems(taskList)
+    saveTasks()
 }
 
-export function clearAll() {
-    localStorage.clear()
-    inputVal.value = ''
-    taskList = []
-    renderItems(taskList)
-    doneTasksDiv.style.display = 'none'
-}
 
-export function clearDoneTask() {
 
-    localStorage.setItem('task', JSON.stringify(taskList))
-    renderItems(taskList)
-    if (!ifDone) filterTasks()
-}
 
