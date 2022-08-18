@@ -1,6 +1,5 @@
-console.log('hello')
-let DB = JSON.parse(localStorage.getItem('task'))
-export default { DB }
+
+let taskList = getTasks()
 
 
 //get tasks from localstorage
@@ -13,13 +12,16 @@ export function saveTasks() {
     localStorage.setItem('task', JSON.stringify(taskList))
 }
 
-let taskList = getTasks()
+export function getTask(id) {
+    taskList.filter(t => t.id === id.toString())[0]
+}
+
+
 export function* listGenerator() {
     for (let i = 0; i < taskList.length; i++) {
         yield taskList[i]
     }
 }
-console.log(taskList)
 
 const inputVal = document.querySelector('.inputVal')//move to edit.js
 
@@ -45,23 +47,11 @@ export function addTodo() {
 
 }
 
-export function fetchtask(id) {
-    return (
-        taskList.find(t => t.id === id.toString())[0]//use find
-    )
-}
-
-export function updateTitle(id) {
-    const title = document.getElementById(`${id}`).querySelector('#pText')
-    task = fetchtask(id)
-    task.title = title.value
-    saveTasks()
-
-}
 
 
-export function deleteItem(id, index) {
-    task = fetchtask(id)
+
+
+export function deleteItem(id) {
     taskList.splice(index, 1)
     saveTasks()
 }

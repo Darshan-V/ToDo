@@ -1,36 +1,29 @@
 import { renderItems } from './edit.js'
-import { getTasks, saveTasks, listGenerator, fetchtask } from './src/DB.js'
+import { getTasks, saveTasks, getTask } from './src/DB.js'
 
 const donetask = document.querySelector('.doneTasks')
 const doneTasksDiv = document.querySelector('.DoneTasksdiv')
 
-getTasks()
 
-export function checkbox(id) {
-    const check = document.getElementById(`${id}`).querySelector('.cbk')
-    const title = document.getElementById(`${id}`).querySelector('#pText')
-    task = fetchtask(id)
-    if (check.checked) {
-        title.style = 'text-decoration: line-through'
-        task.done = true
+let taskList = getTasks()
 
-        taskList.filter(t => t.done === true)
+const cbk = document.querySelector('.cbx')
+cbk.addEventListener('click', updateCheck)
+export function updateCheck(event) {
+    // const check = document.getElementById(`${id}`).querySelector('.cbk')
+    // const title = document.getElementById(`${id}`).querySelector('#pText')id
 
-        if (donetask.value === 'Show Done Tasks') renderItems(taskList.filter(t => t.done === fasle))
-        else renderItems(taskList.concat(t => t.done === true))
+    const dataID = event.target.getAttribute('data-id')
+    console.log(dataID)
 
-        doneTasksDiv.style.display = 'flex'
+    if (dataID.checked) {
+        // title.style = 'text-decoration: line-through'
+        event.done = true
+        saveTasks()
+
     } else {
-        title.style = 'text-decoration: none'
-        task.done = false
-        taskList.filter(t => t.done === false)
-        renderItems(taskList.concat(t => t.done === false))
-
-        if (taskList.forEach(t => t.done) === true) {
-            doneTasksDiv.style.display = 'none'
-            filterTasks()
-            ifDone = !ifDone
-        } else doneTasksDiv.style.display = 'flex'
+        event.done = false
+        saveTasks()
     }
 }
 
@@ -53,9 +46,10 @@ let ifDone = true
 
 
 
+
 export function addPriority(id) {
     const priority = document.getElementById(`${id}`).querySelector('#priority')
-    task = fetchtask(id)
+    task = getTask(id)
     task.priority = priority.value
     priority.children[priority.value].selected = true
     saveTasks()
@@ -97,19 +91,15 @@ export function showExtra(id) {
 
 
 const inputVal = document.querySelector('.inputVal')
-function clearAll() {
+export function clearAll() {
+
     console.log('test')
     localStorage.clear()
     inputVal.value = ''
-    for (let i = 0; i < listGenerator().length; i++) {
-        console.log(taskList)
-    }
-    renderItems()
     doneTasksDiv.style.display = 'none'
-
+    renderItems()
 }
-const clearTasks = document.querySelector('.clearTasks')
-clearTasks.addEventListener('click', clearAll())
+
 
 function clearDoneTask() {
 
