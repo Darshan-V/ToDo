@@ -1,5 +1,5 @@
 import { renderItems } from './edit.js'
-import { getTasks, saveTasks, getTask } from './src/DB.js'
+import { getTasks, saveTasks, getTask, listGenerator } from './src/DB.js'
 
 const donetask = document.querySelector('.doneTasks')
 const doneTasksDiv = document.querySelector('.DoneTasksdiv')
@@ -7,25 +7,32 @@ const doneTasksDiv = document.querySelector('.DoneTasksdiv')
 
 let taskList = getTasks()
 
-const cbk = document.querySelector('.cbx')
-cbk.addEventListener('click', updateCheck)
+
 export function updateCheck(event) {
-    // const check = document.getElementById(`${id}`).querySelector('.cbk')
-    // const title = document.getElementById(`${id}`).querySelector('#pText')id
-
-    const dataID = event.target.getAttribute('data-id')
-    console.log(dataID)
-
-    if (dataID.checked) {
-        // title.style = 'text-decoration: line-through'
-        event.done = true
-        saveTasks()
-
-    } else {
-        event.done = false
-        saveTasks()
+    const id = event.target.getAttribute('id')
+    const check = document.getElementById(`${id}`).querySelector('.cbx')
+    const title = document.getElementById(`${id}`).querySelector('.title')
+    for (const task of listGenerator()) {
+        if (task.id === id) {
+            if (check.checked) {
+                task.done = true
+                title.style = 'text-decoration: line-through'
+                saveTasks()
+            }
+            else {
+                task.done = false
+                title.style = 'text-decoration:none'
+                saveTasks()
+            }
+        }
     }
 }
+//event listner for checkbox
+const cbkItems = document.querySelectorAll('.cbx')
+cbkItems.forEach((cbx) => {
+    cbx.addEventListener('click', updateCheck)
+})
+
 
 export function filterTasks() {
     if (taskList.filter(t => t.done) === false) {
@@ -43,17 +50,30 @@ export function filterTasks() {
 }
 
 let ifDone = true
+//listner to toggle done tasks
+const doneTasks = document.querySelectorAll('.doneTasks')
+doneTasks.forEach((dt) => {
+    dt.addEventListener('click', filterTasks)
+})
 
 
 
+export function addPriority(event) {
+    let id = event.target.getAttribute('id')
+    const priority = document.getElementById(`${id}`).querySelector('.priority')
+    for (const task of listGenerator()) {
+        if (task.id === id) {
+            task.priority = priority.value
+            saveTasks()
+        }
 
-export function addPriority(id) {
-    const priority = document.getElementById(`${id}`).querySelector('#priority')
-    task = getTask(id)
-    task.priority = priority.value
-    priority.children[priority.value].selected = true
-    saveTasks()
+    }
 }
+
+const priorItem = document.querySelectorAll('.priority')
+priorItem.forEach((stat) => {
+    stat.addEventListener('change', addPriority)
+})
 
 export function addDueDate(id) {
     const duedate = document.getElementById(`${id}`).querySelector(`#duedate`)
