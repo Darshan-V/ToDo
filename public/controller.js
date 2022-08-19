@@ -1,4 +1,4 @@
-import { renderItems } from './edit.js'
+import { renderItems } from './index.js'
 import { getTasks, saveTasks, getTask, listGenerator } from './src/DB.js'
 
 const donetask = document.querySelector('.doneTasks')
@@ -75,50 +75,81 @@ priorItem.forEach((stat) => {
     stat.addEventListener('change', addPriority)
 })
 
-export function addDueDate(id) {
-    const duedate = document.getElementById(`${id}`).querySelector(`#duedate`)
-    const date = document.getElementById(`${id}`).querySelector(`#date`)
+export function addDueDate(event) {
+    let id = event.target.getAttribute('id')
+    const duedate = document.getElementById(`${id}`).querySelector(`.duedate`)
+    const date = document.getElementById(`${id}`).querySelector(`.date`)
     date.innerText = new Date(duedate.value).toLocaleDateString()
-    task = fetchtask(id)
-    task.duedate = duedate.value
-    saveTasks()
+    for (const task of listGenerator()) {
+        if (task.id === id) {
+            task.duedate = duedate.value
+            saveTasks()
+        }
+    }
+}
+const dueDate = document.querySelectorAll('.duedate')
+dueDate.forEach((dDaue) => {
+    dDaue.addEventListener('change', addDueDate)
+})
+
+
+export function addnotes(event) {
+    let id = event.target.getAttribute('id')
+    const notes = document.getElementById(`${id}`).querySelector('.notes')
+    for (const task of listGenerator()) {
+        if (task.id === id) {
+            task.notes = notes.value
+            saveTasks()
+        }
+    }
 }
 
+const description = document.querySelectorAll('.notes')
+description.forEach((tDesc) => {
+    tDesc.addEventListener('change', addnotes)
+})
 
-export function addnotes(id) {
-    const notes = document.getElementById(`${id}`).querySelector('#notes')
-    task = fetchtask(id)
-    task.notes = notes.value
-    saveTasks()
-}
-
-export function showExtra(id) {
+export function showExtra(event) {
+    let id = event.target.getAttribute('id')
     const innerdetails = document
         .getElementById(`${id}`)
-        .querySelector('.innerContentContainer')
+        .querySelectorAll('.innerContentContainer')
     const details = document.getElementById(`${id}`).querySelector('.Details')
-    task = fetchtask(id)
-    if (!task.show) {
-        innerdetails.style = 'display: inline-block'
-        details.innerText = '☶'
-    } else {
-        innerdetails.style = 'display: none'
-        details.innerText = '☶'
+    for (const task of listGenerator()) {
+        if (task.id === id) {
+            if (!task.show) {
+                innerdetails.forEach((inner) => {
+                    inner.style = 'display:inline-block'
+                })
+                details.innerText = '☶'
+            } else {
+
+                innerdetails.forEach((inner) => {
+                    inner.style = 'display:none'
+                })
+                details.innerText = '☶'
+            }
+            task.show = !task.show
+            saveTasks()
+        }
     }
-    task.show = !task.show
-    saveTasks()
 }
+const dropbutton = document.querySelectorAll('.Details')
+dropbutton.forEach((button) => {
+    button.addEventListener('click', showExtra)
+})
 
 
 const inputVal = document.querySelector('.inputVal')
 export function clearAll() {
 
-    console.log('test')
     localStorage.clear()
     inputVal.value = ''
     doneTasksDiv.style.display = 'none'
     renderItems()
 }
+const clearAllTasks = document.querySelector('.clearTasks')
+clearAllTasks.addEventListener('click', clearAll)
 
 
 function clearDoneTask() {

@@ -51,7 +51,8 @@ export function addTodo() {
 
 
 
-export function deleteItem(id) {
+export function deleteItem(event) {
+    let id = event.target.getAttribute('id')
     taskList.splice(index, 1)
     saveTasks()
 }

@@ -100,7 +100,7 @@ export function renderItem() {
     datepriority.appendChild(dateBreak)
     datepriority.appendChild(prioritybreak)
 
-    taskele.appendChild(datepriority)
+    innerContent.appendChild(datepriority)
 
     //delete button
     const deleteButton = document.createElement('button')
