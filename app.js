@@ -6,4 +6,4 @@ const port = 8000
 app.use(express.static('public'))
 
 
-app.listen(port, () => console.info(`App listening on port ${port}`))   
+app.listen(port, () => console.info(`App listening on port ${port}`))
