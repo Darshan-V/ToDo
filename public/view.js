@@ -1,6 +1,6 @@
 import { listGenerator } from './src/DB.js'
 
-export function renderItems () {
+export function renderItems() {
   const itemShow = document.querySelector('.todoLists')
   for (const task of listGenerator()) {
     const taskele = document.createElement('div')
@@ -11,7 +11,7 @@ export function renderItems () {
     checkbox.setAttribute('class', 'cbx')
     checkbox.setAttribute('type', 'checkbox')
     checkbox.setAttribute('id', task.id)
-    if (task.done) {
+    if (task.done === true) {
       checkbox.setAttribute('checked', true)
     }
     taskele.appendChild(checkbox)
@@ -99,3 +99,4 @@ export function renderItems () {
     itemShow.appendChild(taskele)
   }
 }
+renderItems()

@@ -13,7 +13,7 @@
 }
 
 .todoLists {
-    height: calc(100vh - 120px);
+    height: calc(100vh - 350px);
     overflow-y: auto;
 }
 
@@ -54,6 +54,10 @@
     color: rgb(245, 174, 179);
     resize: none;
 
+}
+
+.doneList {
+    display: none;
 }
 
 .datepriority {}
