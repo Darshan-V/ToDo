@@ -7,6 +7,7 @@ export function renderItems() {
     const taskele = document.createElement('div')
     taskele.setAttribute('class', 'task')
     taskele.setAttribute('id', task.id)
+    taskele.style = `border-left:${priorityborder(task.priority)}`
 
     const checkbox = document.createElement('input')
     checkbox.setAttribute('class', 'cbx')
@@ -104,3 +105,11 @@ export function renderItems() {
   }
 }
 renderItems()
+function priorityborder(priority) {
+  return {
+    'None': 'solid white 5px',
+    'Low': 'solid blue 5px',
+    'Medium': 'solid orange 5px',
+    'High': 'solid rgb(210, 0, 50) 5px'
+  }[priority]
+}
