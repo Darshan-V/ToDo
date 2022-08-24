@@ -21,13 +21,12 @@ function addTodo() {
     done: false,
     show: false
   }
-  if (inputVal.value.trim() !== '') {
-    item.done = false
-    item.id = Date.now().toString()
-    item.title = inputVal.value
-    taskList.push(item)
-    saveTasks()
-  }
+  if (inputVal.value.trim() === '') return
+  item.done = false
+  item.id = Date.now().toString()
+  item.title = inputVal.value
+  taskList.push(item)//get an addtodo from db
+  saveTasks()
   renderItems()
 }
 
@@ -51,19 +50,13 @@ function markAsDone(event) {
   if (check.checked) {
     title.style = 'text-decoration: line-through'
     task.done = true
-
-    taskList.filter(t => t.done === true)
-    console.log(taskList)
-
     doneTasksDiv.style.display = 'flex'
   } else {
     title.style = 'text-decoration: none'
     task.done = false
-
-    if (taskList.map(t => t.done) === true) {
+    // hideDoneTasks()
+    if (taskList.map(task => task.done) === true) {
       doneTasksDiv.style.display = 'none'
-      filterTasks()
-      ifDone = !ifDone
     } else doneTasksDiv.style.display = 'flex'
   }
   saveTasks()
@@ -74,43 +67,46 @@ cbkItems.forEach((cbx) => {
   cbx.addEventListener('click', markAsDone)
 })
 
-if (taskList.filter(t => t.done === true) === 0) doneTasksDiv.style.display = 'none'
+if (taskList.filter(t => t.done === true) === 0) {
+  doneTasksDiv.style.display = 'none'
+  tasks.innerHTML = ' '
+}
 else doneTasksDiv.style.display = 'flex'
 
-let ifDone = true
-
-// function filterTasks() {
-
-//   const doneTasks = document
-//     .getElementById('id')
-//     .querySelectorAll('.task')
-//   for (const task of listGenerator()) {
-//     if (task.id === id) {
-//       if (task.done) {
-//         doneTasks.forEach((done) => {
-//           done.style = 'display:none'
-//         })
-//         donetask.innerText = 'hide done'
-//       } else {
-//         doneTasks.forEach((done) => {
-//           done.style = 'display:flex'
-//         })
-//         details.innerText = 'show done'
-//       }
-//       task.done = !task.done
-//       saveTasks()
-//     }
-//   }
-// }
 
 
-// // listner to toggle done tasks
-// const showDoneTasks = document.querySelector('.doneTasks')
-// showDoneTasks.addEventListener('click', filterTasks)
+// listner to toggle done tasks
+const hideDoneTasks = document.querySelector('.doneTasks')
+hideDoneTasks.addEventListener('click', function hideDoneTasks() {
+  for (const task of listGenerator()) {
+    if (task.done === true) {
+      console.log(task.id)
+      const taskItem = document.getElementById(task.id)
+      taskItem.style.display = 'none'
+
+
+    }
+
+  }
+})
+
+const showDoneTasks = document.querySelector('.showDone')
+showDoneTasks.setAttribute('class', 'showDone')
+showDoneTasks.setAttribute('value', 'show done tasks')
+doneTasksDiv.appendChild(showDoneTasks)
+showDoneTasks.addEventListener('click', function showDoneTasks() {
+  for (const task of listGenerator()) {
+    if (task.done === true) {
+      const taskItem = document.getElementById(task.id)
+      taskItem.style.display = 'flex'
+
+    }
+  }
+})
 
 function editTitle(event) {
   const id = event.target.getAttribute('id')
-  const title = document.getElementById(`${id}`).querySelector('.title')
+  const title = document.querySelector(`${id}`).querySelector('.title')
   for (const task of listGenerator()) {
     if (task.id === id) {
       task.title = title.value
@@ -118,8 +114,8 @@ function editTitle(event) {
     }
   }
 }
-const updateTitleName = document.querySelectorAll('.title')
-updateTitleName.forEach((rename) => {
+const titleElements = document.querySelectorAll('.title')
+titleElements.forEach((rename) => {
   rename.addEventListener('change', editTitle)
 })
 
@@ -134,8 +130,8 @@ function addPriority(event) {
   }
 }
 
-const priorItem = document.querySelectorAll('.priority')
-priorItem.forEach((stat) => {
+const priorItems = document.querySelectorAll('.priority')
+priorItems.forEach((stat) => {
   stat.addEventListener('change', addPriority)
 })
 
@@ -151,8 +147,8 @@ function addDueDate(event) {
     }
   }
 }
-const dueDate = document.querySelectorAll('.duedate')
-dueDate.forEach((dDaue) => {
+const dueDates = document.querySelectorAll('.duedate')
+dueDates.forEach((dDaue) => {
   dDaue.addEventListener('change', addDueDate)
 })
 
@@ -167,8 +163,8 @@ function addnotes(event) {
   }
 }
 
-const description = document.querySelectorAll('.notes')
-description.forEach((tDesc) => {
+const descriptions = document.querySelectorAll('.notes')
+descriptions.forEach((tDesc) => {
   tDesc.addEventListener('change', addnotes)
 })
 
@@ -196,24 +192,26 @@ function showMoreDetails(event) {
     }
   }
 }
-const dropbutton = document.querySelectorAll('.Details')
-dropbutton.forEach((button) => {
+const dropDownButtons = document.querySelectorAll('.Details')
+dropDownButtons.forEach((button) => {
   button.addEventListener('click', showMoreDetails)
 })
+const clearAllTasks = document.querySelector('.clearTasks')
+clearAllTasks.addEventListener('click', function clearAllTasks() {
+  localStorage.clear()
+  inputVal.value = ''
+  doneTasksDiv.style.display = 'none'
 
-// function clearAll() {
-//   localStorage.clear()
-//   inputVal.value = ''
-//   doneTasksDiv.style.display = 'none'
-// }
-// const clearAllTasks = document.querySelector('.clearTasks')
-// clearAllTasks.addEventListener('click', clearAll)
+})
 
-// function clearDoneTasks() {
-//   taskList.filter(tasks => {
-//     tasks.done === true
-//   })
-//   saveTasks()
-// }
-// const clearDoneItems = document.querySelector('.clearDoneTasks')
-// clearDoneItems.addEventListener('click', clearDoneTasks)
+function clearDoneTasks() {
+  for (let i = taskList.length - 1; i >= 0; --i) {
+    if (taskList[i].done === true) {
+      taskList.splice(i, 1);
+    }
+  }
+
+  saveTasks()
+}
+const clearDoneItems = document.querySelector('.clearDoneTasks')
+clearDoneItems.addEventListener('click', clearDoneTasks)

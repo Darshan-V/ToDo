@@ -19,7 +19,6 @@
 
 .innerContentContainer {
     width: 100%;
-    border-top: groove;
     background-color: white;
 }
 
@@ -31,6 +30,7 @@
     font-size: 0.9rem;
     background-color: white;
     display: none;
+    border-top: groove;
 }
 
 .notesdiv {
@@ -62,6 +62,10 @@
 
 .datepriority {}
 
+.clearTasks {
+    background-color: rgb(222, 222, 193);
+
+}
 
 .clearTasks:hover {
     background-color: crimson;
@@ -80,11 +84,15 @@ footer.DoneTasksdiv {
     cursor: pointer;
 }
 
-.doneTasks {
+.doneTasks,
+.showDone {
     padding: 10px;
+    background-color: rgb(222, 222, 193);
+
 }
 
-.doneTasks:hover {
+.doneTasks:hover,
+.showDone:hover {
     border-radius: 15px;
     cursor: pointer;
 }
@@ -93,11 +101,15 @@ footer.DoneTasksdiv {
     padding-left: 50px;
     padding-right: 50px;
     cursor: pointer;
+    background-color: rgb(222, 222, 193);
+
 
 }
 
 .clearDoneTasks:hover {
     border-radius: 15px;
+    background-color: rgb(222, 222, 193);
+
 }
 
 .Details {
@@ -132,6 +144,7 @@ footer.DoneTasksdiv {
     justify-content: flex-end;
     font-size: large;
     cursor: pointer;
+
 }
 
 .deleteTask:hover {

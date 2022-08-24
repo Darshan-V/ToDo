@@ -1,7 +1,8 @@
 import { listGenerator } from './src/DB.js'
 
 export function renderItems() {
-  const itemShow = document.querySelector('.todoLists')
+  const todoListContainer = document.querySelector('.todoList')
+  todoListContainer.innerHTML = ''
   for (const task of listGenerator()) {
     const taskele = document.createElement('div')
     taskele.setAttribute('class', 'task')
@@ -20,6 +21,9 @@ export function renderItems() {
     title.setAttribute('class', 'title')
     title.setAttribute('value', task.title)
     title.setAttribute('id', task.id)
+    if (task.done === true) {
+      title.style = 'text-decoration: line-through'
+    }
     taskele.appendChild(title)
 
     const dateSpan = document.createElement('span')
@@ -96,7 +100,7 @@ export function renderItems() {
     deleteButton.setAttribute('class', 'deleteTask')
     deleteButton.innerText = 'Delete'
     datepriority.appendChild(deleteButton)
-    itemShow.appendChild(taskele)
+    todoListContainer.appendChild(taskele)
   }
 }
 renderItems()
