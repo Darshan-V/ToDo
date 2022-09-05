@@ -17,7 +17,22 @@ export function* listGenerator() {
   }
 }
 
+
 export function fetchtask(id) {
   return (
     taskList.filter(t => t.id === id.toString())[0])
+}
+
+export function clearDoneTasks() {
+  for (let i = taskList.length - 1; i >= 0; --i) {
+    if (taskList[i].done === true) {
+      taskList.splice(i, 1);
+    }
+  }
+  saveTasks()
+}
+
+export function clearAll() {
+  taskList.length = 0
+  saveTasks()
 }

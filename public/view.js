@@ -4,10 +4,11 @@ export function renderItems() {
   const todoListContainer = document.querySelector('.todoList')
   todoListContainer.innerHTML = ''
   for (const task of listGenerator()) {
-    const taskele = document.createElement('div')
-    taskele.setAttribute('class', 'task')
-    taskele.setAttribute('id', task.id)
-    taskele.style = `border-left:${priorityborder(task.priority)}`
+    const taskElement = document.createElement('div')
+    taskElement.setAttribute('class', 'task')
+    taskElement.setAttribute('id', task.id)
+    taskElement.style.borderLeft = priorityborder(task.priority)
+
 
     const checkbox = document.createElement('input')
     checkbox.setAttribute('class', 'cbx')
@@ -16,7 +17,7 @@ export function renderItems() {
     if (task.done === true) {
       checkbox.setAttribute('checked', true)
     }
-    taskele.appendChild(checkbox)
+    taskElement.appendChild(checkbox)
 
     const title = document.createElement('input')
     title.setAttribute('class', 'title')
@@ -25,7 +26,7 @@ export function renderItems() {
     if (task.done === true) {
       title.style = 'text-decoration: line-through'
     }
-    taskele.appendChild(title)
+    taskElement.appendChild(title)
 
     const dateSpan = document.createElement('span')
     dateSpan.setAttribute('class', 'date')
@@ -37,12 +38,12 @@ export function renderItems() {
     menuButton.setAttribute('class', 'Details')
     menuButton.setAttribute('id', task.id)
     menuButton.innerText = '☶'
-    taskele.append(menuButton)
+    taskElement.append(menuButton)
 
     const innerContentContainer = document.createElement('div')
     innerContentContainer.setAttribute('class', 'innerContentContainer')
     innerContentContainer.setAttribute('id', task.id)
-    taskele.appendChild(innerContentContainer)
+    taskElement.appendChild(innerContentContainer)
 
     const innerContent = document.createElement('div')
     innerContent.setAttribute('class', 'innerContent')
@@ -101,7 +102,7 @@ export function renderItems() {
     deleteButton.setAttribute('class', 'deleteTask')
     deleteButton.innerText = 'Delete'
     datepriority.appendChild(deleteButton)
-    todoListContainer.appendChild(taskele)
+    todoListContainer.appendChild(taskElement)
   }
 }
 renderItems()
@@ -113,3 +114,32 @@ function priorityborder(priority) {
     'High': 'solid rgb(210, 0, 50) 5px'
   }[priority]
 }
+
+
+
+// listner to toggle done tasks
+
+const doneTasksDiv = document.querySelector('.DoneTasksdiv')
+
+const hideDoneTasks = document.querySelector('.doneTasks')
+hideDoneTasks.addEventListener('click', function hideDoneTasks() {
+  for (const task of listGenerator()) {
+    if (task.done === true) {
+      const taskItem = document.getElementById(task.id)
+      taskItem.style.display = 'none'
+    }
+
+  }
+})
+
+const showAllTasks = document.querySelector('.showAll')
+doneTasksDiv.appendChild(showAllTasks)
+showAllTasks.addEventListener('click', function showAllTasks() {
+  for (const task of listGenerator()) {
+    if (task.done === true) {
+      const taskItem = document.getElementById(task.id)
+      taskItem.style.display = 'flex'
+
+    }
+  }
+})

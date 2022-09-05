@@ -1,9 +1,9 @@
-import { saveTasks, taskList, listGenerator, fetchtask } from './src/DB.js'
+import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll } from './src/DB.js'
 import { renderItems } from './view.js'
 
 // dom something
 const inputVal = document.querySelector('.inputVal')
-const donetask = document.querySelector('.doneTasks')
+// const donetask = document.querySelector('.doneTasks')
 const doneTasksDiv = document.querySelector('.DoneTasksdiv')
 
 inputVal.addEventListener('change', () => {
@@ -25,21 +25,23 @@ function addTodo() {
   item.done = false
   item.id = Date.now().toString()
   item.title = inputVal.value
-  taskList.push(item)//get an addtodo from db
-  saveTasks()
+  taskList.push(item)// get an addtodo from db
   renderItems()
+  saveTasks()
+
 }
 
-function deleteItem(event, index) {
+function deleteATask(event, index) {
   const id = event.target.getAttribute('id')
   index = taskList.findIndex(e => e.id === `${id}`)
-  console.log(index)
   taskList.splice(index, 1)
+  renderItems()
   saveTasks()
+
 }
 const deleteTask = document.querySelectorAll('.deleteTask')
 deleteTask.forEach((deleteEle) => {
-  deleteEle.addEventListener('click', deleteItem)
+  deleteEle.addEventListener('click', deleteATask)
 })
 
 function markAsDone(event) {
@@ -54,7 +56,6 @@ function markAsDone(event) {
   } else {
     title.style = 'text-decoration: none'
     task.done = false
-    // hideDoneTasks()
     if (taskList.map(task => task.done) === true) {
       doneTasksDiv.style.display = 'none'
     } else doneTasksDiv.style.display = 'flex'
@@ -70,39 +71,7 @@ cbkItems.forEach((cbx) => {
 if (taskList.filter(t => t.done === true) === 0) {
   doneTasksDiv.style.display = 'none'
   tasks.innerHTML = ' '
-}
-else doneTasksDiv.style.display = 'flex'
-
-
-
-// listner to toggle done tasks
-const hideDoneTasks = document.querySelector('.doneTasks')
-hideDoneTasks.addEventListener('click', function hideDoneTasks() {
-  for (const task of listGenerator()) {
-    if (task.done === true) {
-      console.log(task.id)
-      const taskItem = document.getElementById(task.id)
-      taskItem.style.display = 'none'
-
-
-    }
-
-  }
-})
-
-const showDoneTasks = document.querySelector('.showDone')
-showDoneTasks.setAttribute('class', 'showDone')
-showDoneTasks.setAttribute('value', 'show done tasks')
-doneTasksDiv.appendChild(showDoneTasks)
-showDoneTasks.addEventListener('click', function showDoneTasks() {
-  for (const task of listGenerator()) {
-    if (task.done === true) {
-      const taskItem = document.getElementById(task.id)
-      taskItem.style.display = 'flex'
-
-    }
-  }
-})
+} else doneTasksDiv.style.display = 'flex'
 
 function editTitle(event) {
   const id = event.target.getAttribute('id')
@@ -196,22 +165,16 @@ const dropDownButtons = document.querySelectorAll('.Details')
 dropDownButtons.forEach((button) => {
   button.addEventListener('click', showMoreDetails)
 })
-const clearAllTasks = document.querySelector('.clearTasks')
-clearAllTasks.addEventListener('click', function clearAllTasks() {
-  localStorage.clear()
-  inputVal.value = ''
-  doneTasksDiv.style.display = 'none'
 
+const clearAllTasks = document.querySelector('.clearTasks')
+clearAllTasks.addEventListener('click', function () {
+  clearAll()
+
+  renderItems()
 })
 
-function clearDoneTasks() {
-  for (let i = taskList.length - 1; i >= 0; --i) {
-    if (taskList[i].done === true) {
-      taskList.splice(i, 1);
-    }
-  }
-
-  saveTasks()
-}
 const clearDoneItems = document.querySelector('.clearDoneTasks')
-clearDoneItems.addEventListener('click', clearDoneTasks)
+clearDoneItems.addEventListener('click', function () {
+  clearDoneTasks()
+  renderItems()
+})

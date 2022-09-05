@@ -60,7 +60,7 @@
     display: none;
 }
 
-.datepriority {}
+/* .datepriority {} */
 
 .clearTasks {
     background-color: rgb(222, 222, 193);
@@ -85,14 +85,14 @@ footer.DoneTasksdiv {
 }
 
 .doneTasks,
-.showDone {
+.showAll {
     padding: 10px;
     background-color: rgb(222, 222, 193);
 
 }
 
 .doneTasks:hover,
-.showDone:hover {
+.showAll:hover {
     border-radius: 15px;
     cursor: pointer;
 }
