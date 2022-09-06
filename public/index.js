@@ -1,4 +1,4 @@
-import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll } from './src/DB.js'
+import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask } from './src/DB.js'
 import { renderItems } from './view.js'
 
 // dom something
@@ -25,7 +25,7 @@ function addTodo() {
   item.done = false
   item.id = Date.now().toString()
   item.title = inputVal.value
-  taskList.push(item)// get an addtodo from db
+  taskList.push(item)
   renderItems()
   saveTasks()
 
@@ -33,14 +33,13 @@ function addTodo() {
 
 function deleteATask(event, index) {
   const id = event.target.getAttribute('id')
-  index = taskList.findIndex(e => e.id === `${id}`)
-  taskList.splice(index, 1)
+  deleteTask(id)
   renderItems()
   saveTasks()
 
 }
-const deleteTask = document.querySelectorAll('.deleteTask')
-deleteTask.forEach((deleteEle) => {
+const deleteTaskElement = document.querySelectorAll('.deleteTask')
+deleteTaskElement.forEach((deleteEle) => {
   deleteEle.addEventListener('click', deleteATask)
 })
 

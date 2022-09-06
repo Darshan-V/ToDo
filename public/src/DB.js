@@ -23,6 +23,11 @@ export function fetchtask(id) {
     taskList.filter(t => t.id === id.toString())[0])
 }
 
+export function deleteTask(id, index) {
+  index = taskList.findIndex(e => e.id === id)
+  taskList.splice(index, 1)
+}
+
 export function clearDoneTasks() {
   for (let i = taskList.length - 1; i >= 0; --i) {
     if (taskList[i].done === true) {
