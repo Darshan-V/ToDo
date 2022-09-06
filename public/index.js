@@ -31,7 +31,7 @@ function addTodo() {
 
 }
 
-function deleteATask(event, index) {
+function deleteATask(event) {
   const id = event.target.getAttribute('id')
   deleteTask(id)
   renderItems()
