@@ -1,5 +1,5 @@
-import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask } from './src/DB.js'
-import { renderItems } from './view.js'
+import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
+import { renderItems, priorityBorder } from './view.js'
 
 // dom something
 const inputVal = document.querySelector('.inputVal')
@@ -22,21 +22,15 @@ function addTodo() {
     show: false
   }
   if (inputVal.value.trim() === '') return
-  item.done = false
-  item.id = Date.now().toString()
   item.title = inputVal.value
-  taskList.push(item)
+  addTask(item)
   renderItems()
-  saveTasks()
-
 }
 
 function deleteATask(event) {
   const id = event.target.getAttribute('id')
   deleteTask(id)
   renderItems()
-  saveTasks()
-
 }
 const deleteTaskElement = document.querySelectorAll('.deleteTask')
 deleteTaskElement.forEach((deleteEle) => {
@@ -90,11 +84,10 @@ titleElements.forEach((rename) => {
 function addPriority(event) {
   const id = event.target.getAttribute('id')
   const priority = document.getElementById(`${id}`).querySelector('.priority')
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.priority = priority.value
-      saveTasks()
-    }
+  const taskElement = document.querySelector('.task')
+  setPriority(priority, id)
+  for (let task of listGenerator()) {
+    taskElement.style.borderLeft = priorityBorder(task.priority)
   }
 }
 
@@ -108,29 +101,18 @@ function addDueDate(event) {
   const duedate = document.getElementById(`${id}`).querySelector('.duedate')
   const date = document.getElementById(`${id}`).querySelector('.date')
   date.innerText = new Date(duedate.value).toLocaleDateString()
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.duedate = duedate.value
-      saveTasks()
-    }
-  }
+  setDueDate(id, duedate)
 }
 const dueDates = document.querySelectorAll('.duedate')
-dueDates.forEach((dDaue) => {
-  dDaue.addEventListener('change', addDueDate)
+dueDates.forEach((dDate) => {
+  dDate.addEventListener('change', addDueDate)
 })
 
 function addnotes(event) {
   const id = event.target.getAttribute('id')
   const notes = document.getElementById(`${id}`).querySelector('.notes')
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.notes = notes.value
-      saveTasks()
-    }
-  }
+  setNotes(notes, id)
 }
-
 const descriptions = document.querySelectorAll('.notes')
 descriptions.forEach((tDesc) => {
   tDesc.addEventListener('change', addnotes)

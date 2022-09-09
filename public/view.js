@@ -7,7 +7,8 @@ export function renderItems() {
     const taskElement = document.createElement('div')
     taskElement.setAttribute('class', 'task')
     taskElement.setAttribute('id', task.id)
-    taskElement.style.borderLeft = priorityborder(task.priority)
+    taskElement.style.borderLeft = priorityBorder(task.priority)
+
 
 
     const checkbox = document.createElement('input')
@@ -106,7 +107,7 @@ export function renderItems() {
   }
 }
 renderItems()
-function priorityborder(priority) {
+export function priorityBorder(priority) {
   return {
     'None': 'solid white 5px',
     'Low': 'solid blue 5px',
