@@ -45,7 +45,7 @@ function markAsDone(event) {
   if (check.checked) {
     title.style = 'text-decoration: line-through'
     task.done = true
-    doneTasksDiv.style.display = 'flex'
+    // doneTasksDiv.style.display = 'flex'
   } else {
     title.style = 'text-decoration: none'
     task.done = false
@@ -128,7 +128,7 @@ function showMoreDetails(event) {
     if (task.id === id) {
       if (!task.show) {
         innerdetails.forEach((inner) => {
-          inner.style = 'display:inline-block'
+          inner.style = 'display:flex'//add it to the css
         })
         details.innerText = '☶'
       } else {

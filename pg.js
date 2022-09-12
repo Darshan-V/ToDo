@@ -23,7 +23,7 @@ const insertUser = async (id, done, duedate, notes, priority, show, title) => {
     }
 };
 
-insertUser(1, false, '', 'lkdsjjflk', 'none', false, 'hello').then(result => {
+insertUser(2, false, '10-09-2022', 'lkdsjjflk', 'low', false, 'hello1').then(result => {
     if (result) {
         console.log('User inserted');
     }
