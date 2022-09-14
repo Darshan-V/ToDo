@@ -1,9 +1,8 @@
-import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './../db.js'
+import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
 import { renderItems, priorityBorder } from './view.js'
 
 // dom something
 const inputVal = document.querySelector('.inputVal')
-// const donetask = document.querySelector('.doneTasks')
 const doneTasksDiv = document.querySelector('.DoneTasksdiv')
 
 inputVal.addEventListener('change', () => {
@@ -26,6 +25,14 @@ function addTodo() {
   addTask(item)
   renderItems()
 }
+function something(id) {
+  // const todo = renderItems()
+  inputVal.dataset.id = id
+  console.log(inputVal.dataset.id)
+
+}
+something('1663134363430')
+
 
 function deleteATask(event) {
   const id = event.target.getAttribute('id')
@@ -68,7 +75,7 @@ if (taskList.filter(t => t.done === true) === 0) {
 
 function editTitle(event) {
   const id = event.target.getAttribute('id')
-  const title = document.querySelector(`${id}`).querySelector('.title')
+  const title = document.getElementById(`${id}`).querySelector('.title')
   for (const task of listGenerator()) {
     if (task.id === id) {
       task.title = title.value
@@ -87,7 +94,8 @@ function addPriority(event) {
   const taskElement = document.querySelector('.task')
   setPriority(priority, id)
   for (let task of listGenerator()) {
-    taskElement.style.borderLeft = priorityBorder(task.priority)
+    if (task.id === id)
+      taskElement.style.borderLeft = priorityBorder(task.priority)
   }
 }
 
@@ -155,7 +163,7 @@ clearAllTasks.addEventListener('click', function () {
 })
 
 const clearDoneItems = document.querySelector('.clearDoneTasks')
-clearDoneItems.addEventListener('click', function () {
+clearDoneItems.addEventListener('click', function (e) {
   clearDoneTasks()
   renderItems()
 })

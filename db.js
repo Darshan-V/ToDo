@@ -29,8 +29,9 @@ export async function fetchtask(id) {
 
 export async function addTask(id, title, notes, duedate, priority, done, show) {
 
-    return (await pool.query('INSERT into todo (id,title,notes,duedate,priority,done,show) VALUES($1,$2,$3,$4,$5,$6,$7)',
-        [id, title, notes, duedate, priority, done, show]))
+    const todo = await pool.query('INSERT into todo (id,title,notes,duedate,priority,done,show) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+        [id, title, notes, duedate, priority, done, show])
+    return todo.rows[0].id
 }
 
 export async function deleteTask(id) {
