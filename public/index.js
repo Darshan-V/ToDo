@@ -1,4 +1,4 @@
-import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
+import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './../db.js'
 import { renderItems, priorityBorder } from './view.js'
 
 // dom something

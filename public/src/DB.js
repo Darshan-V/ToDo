@@ -4,6 +4,7 @@ export const taskList = getTasks()
 // get tasks from localstorage
 export function getTasks() {
   return JSON.parse(localStorage.getItem('task')) || []// naming 'tasks'
+
 }
 
 // savetasks to localstorage
@@ -16,7 +17,6 @@ export function* listGenerator() {
     yield taskList[i]
   }
 }
-
 
 export function fetchtask(id) {
   return (
@@ -37,7 +37,7 @@ export function deleteTask(id, index) {
 }
 
 export function setPriority(priority, id) {
-  for (let task of listGenerator()) {
+  for (const task of listGenerator()) {
     if (task.id === id) {
       task.priority = priority.value
       saveTasks()
@@ -66,7 +66,7 @@ export function setNotes(notes, id) {
 export function clearDoneTasks() {
   for (let i = taskList.length - 1; i >= 0; --i) {
     if (taskList[i].done === true) {
-      taskList.splice(i, 1);
+      taskList.splice(i, 1)
     }
   }
   saveTasks()
