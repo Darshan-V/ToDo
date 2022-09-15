@@ -1,8 +1,7 @@
 import express from 'express'
 const app = express()
 
-import pool, { clearDoneTasks, deleteTask, setDueDate, setNotes, setPriority } from './db.js'
-import { getTasks, fetchtask, addTask, editTitle } from './db.js'
+import { getTasks, fetchtask, addTask, editTitle, clearDoneTasks, deleteTask, setDueDate, setNotes, setPriority, clearAll } from './db.js'
 
 
 app.use(express.json())
@@ -56,6 +55,7 @@ app.put('/todo/:id/title', async (req, res) => {
         const { title } = req.body//SET
 
         const updateTodoTitle = await editTitle(title, id)
+
         res.json('todo updated')
     } catch (err) {
         console.error(err.message)
@@ -78,7 +78,7 @@ app.put('/todo/:id/duedate', async (req, res) => {
     try {
         const { id } = req.params
         const { duedate } = req.body
-        const updateNotes = await setDueDate(duedate, id)
+        await setDueDate(duedate, id)
         res.json('duedate updated')
     } catch (err) {
         console.error(err.message)
@@ -91,16 +91,18 @@ app.put('/todo/:id/priority', async (req, res) => {
     try {
         const { id } = req.params
         const { priority } = req.body
-        const updateNotes = await setPriority(priority, id)
-        res.json('priority updated')
+        const updatedPriority = await setPriority(priority, id)
+        res.json(updatedPriority)
     } catch (err) {
         console.error(err.message)
     }
 })
 
+//update completed
+
 app.delete('/todo/deletedone', async (req, res) => {
     try {
-        const deleteDoneTasks = await clearDoneTasks()
+        await clearDoneTasks()
         res.json('cleared done tasks')
     } catch (err) {
         console.error(err.message)
@@ -111,8 +113,17 @@ app.delete('/todo/deletedone', async (req, res) => {
 app.delete('/todo/:id', async (req, res) => {
     try {
         const { id } = req.params
-        const deleteTodo = await deleteTask(id)
-        res.json('todo was deleted')
+        await deleteTask(id)
+        res.json(`task deleted`)
+    } catch (err) {
+        console.error(err.message)
+    }
+})
+
+app.delete('/todos', async (req, res) => {
+    try {
+        await clearAll()
+        res.json('deleted all tasks')
     } catch (err) {
         console.error(err.message)
     }

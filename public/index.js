@@ -1,4 +1,4 @@
-import { saveTasks, taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
+import { taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
 import { renderItems, priorityBorder } from './view.js'
 
 // dom something
@@ -10,8 +10,8 @@ inputVal.addEventListener('change', () => {
   inputVal.value = ''
 })
 
-function addTodo() {
-  const item = {
+function addTodo(data) {
+  data = {
     id: '',
     title: '',
     notes: '',
@@ -21,20 +21,19 @@ function addTodo() {
     show: false
   }
   if (inputVal.value.trim() === '') return
-  item.title = inputVal.value
-  addTask(item)
+  data.title = inputVal.value
+  addTask(data)
   renderItems()
 }
-function something(id) {
-  // const todo = renderItems()
-  inputVal.dataset.id = id
-  console.log(inputVal.dataset.id)
+// function something(id) {
+//   // const todo = renderItems()
+//   inputVal.dataset.id = id
+//   console.log(inputVal.dataset.id)
 
-}
-something('1663134363430')
+// }
+// something('1663134363430')
 
-
-function deleteATask(event) {
+function deleteATask(event, data) {
   const id = event.target.getAttribute('id')
   deleteTask(id)
   renderItems()
@@ -60,7 +59,7 @@ function markAsDone(event) {
       doneTasksDiv.style.display = 'none'
     } else doneTasksDiv.style.display = 'flex'
   }
-  saveTasks()
+
 }
 // event listner for checkbox
 const cbkItems = document.querySelectorAll('.cbx')
@@ -68,18 +67,22 @@ cbkItems.forEach((cbx) => {
   cbx.addEventListener('click', markAsDone)
 })
 
-if (taskList.filter(t => t.done === true) === 0) {
+if (taskList.find(t => t.done === true) === 0) {
   doneTasksDiv.style.display = 'none'
   tasks.innerHTML = ' '
 } else doneTasksDiv.style.display = 'flex'
 
 function editTitle(event) {
-  const id = event.target.getAttribute('id')
+  const id = event.target.getAttribute("id")
+  console.log(id)
   const title = document.getElementById(`${id}`).querySelector('.title')
+  let titleValue = title.value
+  console.log(titleValue)
+  editTitle(id, titleValue)
   for (const task of listGenerator()) {
     if (task.id === id) {
       task.title = title.value
-      saveTasks()
+
     }
   }
 }
@@ -92,10 +95,12 @@ function addPriority(event) {
   const id = event.target.getAttribute('id')
   const priority = document.getElementById(`${id}`).querySelector('.priority')
   const taskElement = document.querySelector('.task')
-  setPriority(priority, id)
-  for (let task of listGenerator()) {
-    if (task.id === id)
+  let selectedPriority = priority.value
+  setPriority(id, selectedPriority)
+  for (const task of listGenerator()) {
+    if (task.id === id) {
       taskElement.style.borderLeft = priorityBorder(task.priority)
+    }
   }
 }
 
@@ -109,7 +114,8 @@ function addDueDate(event) {
   const duedate = document.getElementById(`${id}`).querySelector('.duedate')
   const date = document.getElementById(`${id}`).querySelector('.date')
   date.innerText = new Date(duedate.value).toLocaleDateString()
-  setDueDate(id, duedate)
+  let selectedDuedate = duedate.value
+  setDueDate(id, selectedDuedate)
 }
 const dueDates = document.querySelectorAll('.duedate')
 dueDates.forEach((dDate) => {
@@ -119,7 +125,8 @@ dueDates.forEach((dDate) => {
 function addnotes(event) {
   const id = event.target.getAttribute('id')
   const notes = document.getElementById(`${id}`).querySelector('.notes')
-  setNotes(notes, id)
+  let notesValue = notes.value
+  setNotes(notesValue, id)
 }
 const descriptions = document.querySelectorAll('.notes')
 descriptions.forEach((tDesc) => {
@@ -136,7 +143,7 @@ function showMoreDetails(event) {
     if (task.id === id) {
       if (!task.show) {
         innerdetails.forEach((inner) => {
-          inner.style = 'display:flex'//add it to the css
+          inner.style = 'display:flex'// add it to the css
         })
         details.innerText = '☶'
       } else {
@@ -146,7 +153,7 @@ function showMoreDetails(event) {
         details.innerText = '☶'
       }
       task.show = !task.show
-      saveTasks()
+
     }
   }
 }
@@ -158,12 +165,11 @@ dropDownButtons.forEach((button) => {
 const clearAllTasks = document.querySelector('.clearTasks')
 clearAllTasks.addEventListener('click', function () {
   clearAll()
-
   renderItems()
 })
 
 const clearDoneItems = document.querySelector('.clearDoneTasks')
-clearDoneItems.addEventListener('click', function (e) {
+clearDoneItems.addEventListener('click', function () {
   clearDoneTasks()
   renderItems()
 })

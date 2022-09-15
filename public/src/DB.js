@@ -1,16 +1,26 @@
 
-export const taskList = getTasks()
-
 // get tasks from localstorage
-export function getTasks() {
-  return JSON.parse(localStorage.getItem('task')) || []// naming 'tasks'
 
+
+const mainUrl = 'http://localhost:8000/todo'
+let jsondata
+let apiUrl = "http://localhost:8000/todos"
+
+export async function getTasks(url) {
+  let response = await fetch(url)
+  let data = await response.json()
+  return data
 }
 
-// savetasks to localstorage
-export function saveTasks() {
-  localStorage.setItem('task', JSON.stringify(taskList))
+async function main() {
+  getTasks(apiUrl)
+    .then(data => { return data })
 }
+main()
+jsondata = await getTasks(apiUrl)
+export const taskList = jsondata
+// console.log(taskList)
+
 
 export function* listGenerator() {
   for (let i = 0; i < taskList.length; i++) {
@@ -18,61 +28,72 @@ export function* listGenerator() {
   }
 }
 
-export function fetchtask(id) {
-  return (
-    taskList.filter(t => t.id === id.toString())[0])
+export async function fetchtask(id) {
+  return (await fetch(`${mainUrl}/${id}`))
 }
 
-export function addTask(item) {
-  item.done = false
+export async function addTask(item) {
   item.id = Date.now().toString()
   taskList.push(item)
-  saveTasks()
+  return await fetch('http://localhost:8000/todo', {
+    method: 'POST',
+    body: JSON.stringify(item),
+    headers: {
+      'content-type': 'application/json'
+    }
+  })
 }
 
-export function deleteTask(id, index) {
+export async function deleteTask(id, index) {
   index = taskList.findIndex(e => e.id === id)
   taskList.splice(index, 1)
-  saveTasks()
+  return await fetch(`${mainUrl}/${id}`, { method: 'DELETE' })
+
 }
 
-export function setPriority(priority, id) {
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.priority = priority.value
-      saveTasks()
-    }
-  }
+export async function setPriority(id, priority) {
+  console.log(priority)
+  return await fetch(`${mainUrl}/${id}/priority`, {
+    method: 'PUT',
+    body: JSON.stringify({ priority: `${priority}` }),
+    headers: { 'content-type': 'application/json' }
+  })
+
 }
 
-export function setDueDate(id, duedate) {
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.duedate = duedate.value
-      saveTasks()
-    }
-  }
+
+
+export async function setDueDate(id, duedate) {
+  console.log(duedate)
+  return await fetch(`${mainUrl}/${id}/duedate`, {
+    method: 'PUT',
+    body: JSON.stringify({ duedate: `${duedate}` }),
+    headers: { 'content-type': 'application/json' }
+  })
 }
 
-export function setNotes(notes, id) {
-  for (const task of listGenerator()) {
-    if (task.id === id) {
-      task.notes = notes.value
-      saveTasks()
-    }
-  }
+export async function setNotes(notes, id) {
+  console.log(notes)
+  return await fetch(`${mainUrl}/${id}/notes`, {
+    method: 'PUT',
+    body: JSON.stringify({ notes: `${notes}` }),
+    headers: { 'content-type': 'application/json' }
+  })
 }
 
-export function clearDoneTasks() {
-  for (let i = taskList.length - 1; i >= 0; --i) {
-    if (taskList[i].done === true) {
-      taskList.splice(i, 1)
-    }
-  }
-  saveTasks()
+export async function clearDoneTasks() {
+  return await fetch(`${mainUrl}/deletedone`, { method: 'DELETE' })
 }
 
-export function clearAll() {
+export async function clearAll() {
   taskList.length = 0
-  saveTasks()
+  return await fetch(`${apiUrl}`, { method: 'DELETE' })
+}
+
+export async function editTitle(id, title) {
+  return await fetch(`${mainUrl}/${id}/title`, {
+    method: 'PUT',
+    body: JSON.stringify({ title: `${title}` }),
+    headers: { 'content-type': 'application/json' }
+  })
 }
