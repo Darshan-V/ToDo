@@ -12,14 +12,10 @@ export async function getTasks(url) {
   return data
 }
 
-async function main() {
-  getTasks(apiUrl)
-    .then(data => { return data })
-}
-main()
+
 jsondata = await getTasks(apiUrl)
 export const taskList = jsondata
-// console.log(taskList)
+
 
 
 export function* listGenerator() {
@@ -28,7 +24,7 @@ export function* listGenerator() {
   }
 }
 
-export async function fetchtask(id) {
+export async function fetchTask(id) {
   return (await fetch(`${mainUrl}/${id}`))
 }
 
@@ -73,7 +69,7 @@ export async function setDueDate(id, duedate) {
 }
 
 export async function setNotes(notes, id) {
-  console.log(notes)
+
   return await fetch(`${mainUrl}/${id}/notes`, {
     method: 'PUT',
     body: JSON.stringify({ notes: `${notes}` }),
@@ -82,6 +78,11 @@ export async function setNotes(notes, id) {
 }
 
 export async function clearDoneTasks() {
+  for (let i = taskList.length - 1; i >= 0; --i) {
+    if (taskList[i].done === true) {
+      taskList.splice(i, 1);
+    }
+  }
   return await fetch(`${mainUrl}/deletedone`, { method: 'DELETE' })
 }
 

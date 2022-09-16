@@ -1,4 +1,4 @@
-import { taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes, updateTitle, updateDoneStatus } from './src/DB.js'
+import { taskList, listGenerator, fetchTask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes, updateTitle, updateDoneStatus } from './src/DB.js'
 import { renderItems, priorityBorder } from './view.js'
 
 // dom something
@@ -42,7 +42,7 @@ function markAsDone(event, id) {
   id = event.target.getAttribute('id')
   const check = document.getElementById(`${id}`).querySelector('.cbx')
   const title = document.getElementById(`${id}`).querySelector('.title')
-  const task = fetchtask(id)
+  const task = fetchTask(id)
   if (check.checked) {
     title.style = 'text-decoration: line-through'
     task.done = true

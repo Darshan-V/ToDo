@@ -16,11 +16,6 @@ export async function getTasks() {
   return (await pool.query('SELECT * FROM todo'))// naming 'tasks'
 }
 
-function* listGenerator() {
-  for (let i = 0; i < taskList.length; i++) {
-    yield taskList[i]
-  }
-}
 
 export async function fetchtask(id) {
   return (
