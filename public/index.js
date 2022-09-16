@@ -1,4 +1,4 @@
-import { taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes } from './src/DB.js'
+import { taskList, listGenerator, fetchtask, clearDoneTasks, clearAll, deleteTask, addTask, setPriority, setDueDate, setNotes, updateTitle, updateDoneStatus } from './src/DB.js'
 import { renderItems, priorityBorder } from './view.js'
 
 // dom something
@@ -25,13 +25,7 @@ function addTodo(data) {
   addTask(data)
   renderItems()
 }
-// function something(id) {
-//   // const todo = renderItems()
-//   inputVal.dataset.id = id
-//   console.log(inputVal.dataset.id)
 
-// }
-// something('1663134363430')
 
 function deleteATask(event, data) {
   const id = event.target.getAttribute('id')
@@ -43,18 +37,24 @@ deleteTaskElement.forEach((deleteEle) => {
   deleteEle.addEventListener('click', deleteATask)
 })
 
-function markAsDone(event) {
-  const id = event.target.getAttribute('id')
+function markAsDone(event, id) {
+
+  id = event.target.getAttribute('id')
   const check = document.getElementById(`${id}`).querySelector('.cbx')
   const title = document.getElementById(`${id}`).querySelector('.title')
   const task = fetchtask(id)
   if (check.checked) {
     title.style = 'text-decoration: line-through'
     task.done = true
+    const done = task.done
+    console.log(done)
+    updateDoneStatus(done, id)
     // doneTasksDiv.style.display = 'flex'
   } else {
     title.style = 'text-decoration: none'
     task.done = false
+    const notDone = task.done
+    updateDoneStatus(notDone, id)
     if (taskList.map(task => task.done) === true) {
       doneTasksDiv.style.display = 'none'
     } else doneTasksDiv.style.display = 'flex'
@@ -73,18 +73,23 @@ if (taskList.find(t => t.done === true) === 0) {
 } else doneTasksDiv.style.display = 'flex'
 
 function editTitle(event) {
-  const id = event.target.getAttribute("id")
+  console.log(event.target)
+
+  const id = event.target.getAttribute('id')
   console.log(id)
   const title = document.getElementById(`${id}`).querySelector('.title')
   let titleValue = title.value
   console.log(titleValue)
-  editTitle(id, titleValue)
+
+  updateTitle(id, titleValue)
+
   for (const task of listGenerator()) {
     if (task.id === id) {
       task.title = title.value
 
     }
   }
+  renderItems()
 }
 const titleElements = document.querySelectorAll('.title')
 titleElements.forEach((rename) => {
@@ -102,6 +107,7 @@ function addPriority(event) {
       taskElement.style.borderLeft = priorityBorder(task.priority)
     }
   }
+  renderItems()
 }
 
 const priorItems = document.querySelectorAll('.priority')
@@ -116,6 +122,7 @@ function addDueDate(event) {
   date.innerText = new Date(duedate.value).toLocaleDateString()
   let selectedDuedate = duedate.value
   setDueDate(id, selectedDuedate)
+  renderItems()
 }
 const dueDates = document.querySelectorAll('.duedate')
 dueDates.forEach((dDate) => {
@@ -127,6 +134,7 @@ function addnotes(event) {
   const notes = document.getElementById(`${id}`).querySelector('.notes')
   let notesValue = notes.value
   setNotes(notesValue, id)
+  renderItems()
 }
 const descriptions = document.querySelectorAll('.notes')
 descriptions.forEach((tDesc) => {

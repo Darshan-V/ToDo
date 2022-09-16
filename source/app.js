@@ -1,7 +1,7 @@
 import express from 'express'
 const app = express()
 
-import { getTasks, fetchtask, addTask, editTitle, clearDoneTasks, deleteTask, setDueDate, setNotes, setPriority, clearAll } from './db.js'
+import { getTasks, fetchtask, addTask, editTitle, clearDoneTasks, deleteTask, setDueDate, setNotes, setPriority, clearAll, markAsDone } from './db.js'
 
 
 app.use(express.json())
@@ -54,7 +54,7 @@ app.put('/todo/:id/title', async (req, res) => {
         const { id } = req.params//WHERE
         const { title } = req.body//SET
 
-        const updateTodoTitle = await editTitle(title, id)
+        await editTitle(title, id)
 
         res.json('todo updated')
     } catch (err) {
@@ -66,7 +66,7 @@ app.put('/todo/:id/notes', async (req, res) => {
     try {
         const { id } = req.params
         const { notes } = req.body
-        const updateNotes = await setNotes(notes, id)
+        await setNotes(notes, id)
         res.json('notes updated')
     } catch (err) {
         console.error(err.message)
@@ -91,14 +91,25 @@ app.put('/todo/:id/priority', async (req, res) => {
     try {
         const { id } = req.params
         const { priority } = req.body
-        const updatedPriority = await setPriority(priority, id)
-        res.json(updatedPriority)
+        await setPriority(priority, id)
+        res.json('updatedPriority')
     } catch (err) {
         console.error(err.message)
     }
 })
 
 //update completed
+
+app.put('/todos/:id/completed', async (req, res) => {
+    try {
+        const { id } = req.params
+        const { done } = req.body
+        await markAsDone(done, id)
+        res.json('status updated')
+    } catch (err) {
+        console.error(err.message)
+    }
+})
 
 app.delete('/todo/deletedone', async (req, res) => {
     try {

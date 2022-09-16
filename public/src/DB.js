@@ -90,10 +90,19 @@ export async function clearAll() {
   return await fetch(`${apiUrl}`, { method: 'DELETE' })
 }
 
-export async function editTitle(id, title) {
+export async function updateTitle(id, title) {
   return await fetch(`${mainUrl}/${id}/title`, {
     method: 'PUT',
     body: JSON.stringify({ title: `${title}` }),
+    headers: { 'content-type': 'application/json' }
+  })
+}
+
+export async function updateDoneStatus(status, id) {
+  console.log(status)
+  return await fetch(`${apiUrl}/${id}/completed`, {
+    method: 'PUT',
+    body: JSON.stringify({ done: `${status}` }),
     headers: { 'content-type': 'application/json' }
   })
 }

@@ -62,6 +62,8 @@ export async function clearAll() {
   return (await pool.query('DELETE from todo'))
 }
 
-export async function markAsDone(done, id) {
-  return (await pool.query('UPDATE todo SET done = $1 WHERE id = $2', [done, id]))
+export async function markAsDone(status, id) {
+  // console.log('calling this function')
+  // console.log(status, id)
+  return (await pool.query('UPDATE todo SET done = $1 WHERE id = $2', [status, id]))
 }
